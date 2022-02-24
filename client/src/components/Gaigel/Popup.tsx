@@ -27,6 +27,9 @@ interface Props {
 
 const Popup: React.FC<Props> = ({ snackbarType, type, detail, reset }) => {
     const classes = useStyles();
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.up("md"));
+
     let message = "";
 
     switch (type) {

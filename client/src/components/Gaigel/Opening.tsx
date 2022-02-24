@@ -96,8 +96,8 @@ const Opening: React.FC<Props> = ({
                 <Typography variant={matches ? "h6" : "body1"} className={classes.header}>
                     Eröffnung
                 </Typography>
-                <IconButton>
-                    <HelpOutlineIcon onClick={handleClick} color="action" />
+                <IconButton onClick={handleClick}>
+                    <HelpOutlineIcon color="action" />
                 </IconButton>
             </Box>
 

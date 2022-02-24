@@ -104,7 +104,12 @@ const LandingPage: React.FC<Props> = ({ login }) => {
                 erstellt."
             />
 
-            <Button variant="contained" onClick={handleLogin} style={{ width: "100%" }}>
+            <Button
+                disabled={username === "" || lobbycode === "" ? true : false}
+                variant="contained"
+                onClick={handleLogin}
+                style={{ width: "100%" }}
+            >
                 Beitreten
             </Button>
         </Box>

@@ -38,7 +38,7 @@ const Header: React.FC<Props> = () => {
     return (
         <>
             <Box className={classes.root}>
-                <img src={"/Header_symbols.png"} className={classes.logo} />
+                <img src={"/Header_symbols.png"} className={classes.logo} alt="" />
                 <Typography
                     align="center"
                     variant={matches ? "h3" : "h4"}
@@ -46,7 +46,7 @@ const Header: React.FC<Props> = () => {
                 >
                     Gaigel
                 </Typography>
-                <img src={"/Header_symbols_mirror.png"} className={classes.logo} />
+                <img src={"/Header_symbols_mirror.png"} className={classes.logo} alt="" />
             </Box>
 
             <hr style={{ width: "100%" }} />

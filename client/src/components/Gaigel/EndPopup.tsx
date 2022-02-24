@@ -123,7 +123,7 @@ const EndPopup: React.FC<Props> = ({ endInformation, backToLobby, aufDissle, los
     useEffect(() => {
         if (showRanking) setFinalSorting(sortedByWins);
         else setFinalSorting(sortedByScore);
-    }, [showRanking]);
+    }, [showRanking, sortedByScore, sortedByWins]);
 
     useEffect(() => {
         setCounter(20);
@@ -133,9 +133,9 @@ const EndPopup: React.FC<Props> = ({ endInformation, backToLobby, aufDissle, los
     return (
         <Card className={classes.root}>
             <Box className={classes.header}>
-                <img src={"/krone_01.png"} className={classes.logo} />
+                <img src={"/crown.png"} className={classes.logo} alt="" />
                 <Typography align="center" variant={matches ? "h4" : "h5"}>
-                    {true
+                    {aufDissle
                         ? `${losingPlayer} hat auf Dissle verloren!`
                         : `${endInformation[0].username} hat gewonnen!`}
                 </Typography>

@@ -1,12 +1,14 @@
 import { makeStyles, Theme, useTheme, createStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { Grid, Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 
 import GaigelCard from "./GaigelCard";
+import HelpButton from "./HelpButton";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
+            width: "100%",
             borderRadius: 20,
             display: "flex",
             flexDirection: "column",
@@ -16,24 +18,39 @@ const useStyles = makeStyles((theme: Theme) =>
         header: {
             fontWeight: "lighter",
         },
+        cardContainer: {
+            display: "flex",
+            justifyContent: "center",
+            alignContent: "center",
+            alignItems: "center",
+            gap: "5px",
+        },
+        cardsButtonContainer: {
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-around",
+            alignContent: "center",
+            alignItems: "center",
+            gap: "20px",
+        },
     })
 );
-interface Props {
-    userCards: CardProps[];
-    playCard: (type: string, value: string) => void;
-}
 
 interface CardProps {
     type: string;
     value: string;
 }
 
-const YourCards: React.FC<Props> = ({ userCards, playCard }) => {
+interface Props {
+    userCards: CardProps[];
+    playCard: (type: string, value: string) => void;
+    toggleShowInstructions: () => void;
+}
+
+const YourCards: React.FC<Props> = ({ userCards, playCard, toggleShowInstructions }) => {
     const classes = useStyles();
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.up("md"));
-
-    let i: number = 0;
 
     let filledUserCards: CardProps[] = userCards.slice();
 
@@ -47,22 +64,26 @@ const YourCards: React.FC<Props> = ({ userCards, playCard }) => {
                 Deine Karten
             </Typography>
 
-            <Grid container spacing={1} justifyContent="center">
-                {filledUserCards.map((card) => {
-                    i++;
-                    let currentClickable = card.type === "" ? false : true;
-                    return (
-                        <Grid item key={i}>
+            <Box className={classes.cardsButtonContainer}>
+                <HelpButton toggleShowInstructions={toggleShowInstructions} invisible={true} />
+
+                <Box className={classes.cardContainer}>
+                    {filledUserCards.map((card, index) => {
+                        let currentClickable = card.type === "" ? false : true;
+                        return (
                             <GaigelCard
                                 type={card.type}
                                 value={card.value}
                                 clickable={currentClickable}
                                 playCard={playCard}
+                                key={index}
                             />
-                        </Grid>
-                    );
-                })}
-            </Grid>
+                        );
+                    })}
+                </Box>
+
+                <HelpButton toggleShowInstructions={toggleShowInstructions} />
+            </Box>
         </Box>
     );
 };

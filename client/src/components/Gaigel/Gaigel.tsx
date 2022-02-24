@@ -10,7 +10,7 @@ import Talon from "./Talon";
 import TrumpCard from "./TrumpCard";
 import PlayedCards from "./PlayedCards";
 import YourCards from "./YourCards";
-import { Box, Button, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import Opening from "./Opening";
 import LobbyPage from "./LobbyPage";
 import PlayerList from "./PlayerList";
@@ -20,6 +20,7 @@ import EndPopup from "./EndPopup";
 import Header from "./Header";
 import Actions from "./Actions";
 import OpeningInstructions from "./OpeningInstructions";
+import Instructions from "./Instructions";
 
 // MARK: Styles
 const useStyles = makeStyles((theme: Theme) =>
@@ -46,6 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
     })
 );
+
 interface Props {}
 
 interface CardProps {
@@ -92,6 +94,8 @@ const Gaigel: React.FC<Props> = () => {
     // Boolean for deciding on whether to show the lobby page or the game
     const [gameStarted, setGameStarted] = useState<boolean>(false);
 
+    const [showInstructions, setShowInstructions] = useState<boolean>(true);
+
     const [ownUsername, setOwnUsername] = useState<string>("");
 
     const [score, setScore] = useState<number>(0);
@@ -116,9 +120,6 @@ const Gaigel: React.FC<Props> = () => {
     const [canPlayHöherHat, setCanPlayHöherHat] = useState<boolean>(true);
 
     const [currentOpening, setCurrentOpening] = useState<string>("");
-
-    // Latest response from server (For debugging purposes)
-    const [response, setResponse] = useState("");
 
     const [socket, setSocket] = useState(null);
 
@@ -160,6 +161,11 @@ const Gaigel: React.FC<Props> = () => {
     const [lostAufDissle, setLostAufDissle] = useState<boolean>(false);
 
     const [losingPlayer, setLosingPlayer] = useState<string>("");
+
+    const toggleShowInstructions = () => {
+        let newValue: boolean = !showInstructions;
+        setShowInstructions(newValue);
+    };
 
     const onClickOpening = () => {
         setClickedOpening(!clickedOpening);
@@ -308,10 +314,6 @@ const Gaigel: React.FC<Props> = () => {
         // @ts-ignore
         setSocket(newSocket);
 
-        newSocket.on("onConnect", (data: string) => {
-            setResponse(data);
-        });
-
         newSocket.on("setLoggedIn", (data: boolean) => {
             setLoggedIn(data);
         });
@@ -398,10 +400,11 @@ const Gaigel: React.FC<Props> = () => {
     return (
         <Box
             className={classes.root}
-            style={{
-                backgroundColor: loggedIn && gameStarted ? "#ffffff" : "none",
-                boxShadow: !loggedIn || !gameStarted ? "none" : "5px 5px 15px black",
-            }}
+            style={
+                loggedIn && gameStarted
+                    ? { backgroundColor: "#fff", boxShadow: "5px 5px 15px black" }
+                    : {}
+            }
         >
             {!loggedIn ? (
                 <LandingPage login={login} />
@@ -471,7 +474,11 @@ const Gaigel: React.FC<Props> = () => {
                         />
                     )}
 
-                    <YourCards userCards={yourCards} playCard={playCard} />
+                    <YourCards
+                        userCards={yourCards}
+                        playCard={playCard}
+                        toggleShowInstructions={toggleShowInstructions}
+                    />
                 </>
             )}
             <Popup
@@ -486,6 +493,7 @@ const Gaigel: React.FC<Props> = () => {
                 detail={warningType.detail}
                 reset={resetWarning}
             />
+            {showInstructions && <Instructions />}
         </Box>
     );
 };

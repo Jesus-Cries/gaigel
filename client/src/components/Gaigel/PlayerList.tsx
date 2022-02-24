@@ -43,16 +43,14 @@ const PlayerList: React.FC<Props> = ({ order, playerWithTurn }) => {
             {order.map((player, index) => {
                 let turn = player.socketId === playerWithTurn.socketId;
                 return (
-                    <>
-                        <Typography
-                            variant={matches ? "body1" : "body2"}
-                            className={classes.name}
-                            style={{ border: turn ? "2px solid #ffe600" : "none" }}
-                            key={player.socketId}
-                        >
-                            {index + 1}. {player.username}
-                        </Typography>
-                    </>
+                    <Typography
+                        variant={matches ? "body1" : "body2"}
+                        className={classes.name}
+                        style={{ border: turn ? "2px solid #ffe600" : "none" }}
+                        key={index}
+                    >
+                        {index + 1}. {player.username}
+                    </Typography>
                 );
             })}
         </Box>
