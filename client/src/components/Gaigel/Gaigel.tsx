@@ -95,7 +95,7 @@ const Gaigel: React.FC<Props> = () => {
     // Boolean for deciding on whether to show the lobby page or the game
     const [gameStarted, setGameStarted] = useState<boolean>(false);
 
-    const [showInstructions, setShowInstructions] = useState<boolean>(true);
+    const [showInstructions, setShowInstructions] = useState<boolean>(false);
 
     const [ownUsername, setOwnUsername] = useState<string>("");
 
@@ -290,9 +290,10 @@ const Gaigel: React.FC<Props> = () => {
     // @ts-ignore
     useEffect(() => {
         const newSocket = socketIOClient("https://gaigel-web.herokuapp.com/");
-        if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+        if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
             const newSocket = socketIOClient("http://127.0.0.1:5000");
         }
+
         // @ts-ignore
         setSocket(newSocket);
 
@@ -389,7 +390,7 @@ const Gaigel: React.FC<Props> = () => {
             }
         >
             {!loggedIn ? (
-                <LandingPage login={login} />
+                <LandingPage login={login} toggleShowInstructions={toggleShowInstructions} />
             ) : !gameStarted ? (
                 <LobbyPage
                     backToLogin={backToLogin}
@@ -397,6 +398,7 @@ const Gaigel: React.FC<Props> = () => {
                     playerInformation={lobbyInformation.playerInformation}
                     amountReadyPlayers={lobbyInformation.amountReadyPlayers}
                     getReady={getReady}
+                    toggleShowInstructions={toggleShowInstructions}
                 />
             ) : (
                 <>
