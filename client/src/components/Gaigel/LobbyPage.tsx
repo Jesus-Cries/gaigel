@@ -1,8 +1,12 @@
+import { useState } from "react";
+
 import { makeStyles, Theme, useTheme, createStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Box, Typography, Button, IconButton } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+
 import Header from "./Header";
+import HelpButton from "./HelpButton";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -40,14 +44,14 @@ const useStyles = makeStyles((theme: Theme) =>
         lighterFontWeight: {
             fontWeight: "lighter",
         },
-        readyInformation: {
+        controllContainer: {
             display: "flex",
             justifyContent: "space-between",
             alignContent: "center",
             alignItems: "center",
         },
         readyButton: {
-            width: "40%",
+            width: "30%",
         },
     })
 );
@@ -61,6 +65,7 @@ interface Props {
     playerInformation: PlayerProps[];
     amountReadyPlayers: number;
     getReady: () => void;
+    toggleShowInstructions: () => void;
 }
 
 const LobbyPage: React.FC<Props> = ({
@@ -69,15 +74,22 @@ const LobbyPage: React.FC<Props> = ({
     playerInformation,
     amountReadyPlayers,
     getReady,
+    toggleShowInstructions,
 }) => {
     const classes = useStyles();
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.up("md"));
 
+    const [ready, setReady] = useState<boolean>(false);
+
+    const handleOnClick = () => {
+        getReady();
+        setReady(true);
+    };
+
     return (
         <Box className={classes.root}>
             <Header />
-
             <Box className={classes.control}>
                 <IconButton onClick={backToLogin}>
                     <ArrowBackIcon fontSize={matches ? "large" : "medium"} />
@@ -89,7 +101,6 @@ const LobbyPage: React.FC<Props> = ({
                     Lobbycode: {lobbycode}
                 </Typography>
             </Box>
-
             <Box className={classes.playerList}>
                 <Typography
                     align="center"
@@ -123,16 +134,25 @@ const LobbyPage: React.FC<Props> = ({
                 })}
             </Box>
 
-            <Box className={classes.readyInformation}>
+            <hr style={{ width: "100%" }} />
+
+            <Box className={classes.controllContainer}>
                 <Typography
                     variant={matches ? "h6" : "body1"}
                     className={classes.lighterFontWeight}
                 >
                     Bereit: {amountReadyPlayers} / {playerInformation.length}
                 </Typography>
-                <Button className={classes.readyButton} variant="contained" onClick={getReady}>
+                <Button
+                    className={classes.readyButton}
+                    variant="contained"
+                    disabled={ready}
+                    onClick={handleOnClick}
+                    size={matches ? "large" : "small"}
+                >
                     Bereit
                 </Button>
+                <HelpButton toggleShowInstructions={toggleShowInstructions} />
             </Box>
         </Box>
     );
