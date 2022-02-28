@@ -134,7 +134,7 @@ const Instructions: React.FC<Props> = ({ toggleShowInstructions }) => {
                 {
                     title: "Auf Dissle",
                     content:
-                        "Eine weitere Eröffnungsmöglichkeit ist Dissle. Sagt die Vorhand zu Beginn des Spiels, dass auf Dissle gespielt wird, so gewinnt die Vorhand das Spiel, falls sie im Verlauf des Spiels fünf Siebener gleichzeitig besitzt. Die Gegner können bereits vorher das reguläre Spielende erreichen. Die Vorhand hat das Spiel verloren, wenn sie einen Stich gewinnt.",
+                        "Eine weitere Eröffnungsmöglichkeit ist Dissle. Sagt die Vorhand zu Beginn des Spiels, dass auf Dissle gespielt wird, so gewinnt die Vorhand das Spiel, falls sie im Verlauf des Spiels fünf Siebener gleichzeitig besitzt. Die Gegner können bereits vorher das reguläre Spielende erreichen. Die Vorhand hat das Spiel verloren, wenn sie einen Stich gewinnt. In diesem Fall gewinnen alle anderen Spieler.",
                 },
             ],
         },
