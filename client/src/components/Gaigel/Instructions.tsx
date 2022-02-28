@@ -69,6 +69,26 @@ const Instructions: React.FC<Props> = ({ toggleShowInstructions }) => {
 
     const pages: PageProps[] = [
         {
+            title: "Einleitung",
+            paragraphes: [
+                {
+                    title: "Lobby erstellen",
+                    content:
+                        'Um eine Lobby zu erstellen, geben Sie einfach einen Nutzernamen und einen Lobbycode ein, unter welchem Sie eine Lobby erstellen wollen. Andere Spieler können Ihrer Lobby nun beitreten, wenn sie denselben Lobbycode eingeben. Drücken sie dann auf "Beitreten".',
+                },
+                {
+                    title: "Lobby beitreten",
+                    content:
+                        'Wenn Sie einer Lobby beitreten wollen, gehen Sie vor wie beim Erstellen einer Lobby: Wählen Sie einen Nutzernamen und geben Sie den Lobbycode ein, unter welchem die Lobby erstellt wurde. Drücken sie dann auf "Beitreten".',
+                },
+                {
+                    title: "Spiel starten",
+                    content:
+                        'Sobald alle Spieler auf "Bereit" geklickt haben und die Spieleranzahl 2, 3, 4 oder 6 Spielern liegt wird das Spiel gestartet.',
+                },
+            ],
+        },
+        {
             title: "Spielverlauf",
             paragraphes: [
                 {
@@ -174,6 +194,8 @@ const Instructions: React.FC<Props> = ({ toggleShowInstructions }) => {
             <hr style={{ width: "100%" }} />
 
             {currentPage === 0 ? (
+                <InstructionPage page={pages[0]} />
+            ) : currentPage === 1 ? (
                 <FirstInstructionPage />
             ) : (
                 <InstructionPage page={pages[currentPage - 1]} />
