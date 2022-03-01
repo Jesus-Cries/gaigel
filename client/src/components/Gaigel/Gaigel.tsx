@@ -98,6 +98,7 @@ const Gaigel: React.FC<Props> = () => {
     const [showInstructions, setShowInstructions] = useState<boolean>(false);
 
     const [ownUsername, setOwnUsername] = useState<string>("");
+    const [ownSocketId, setOwnSocketId] = useState<string>("");
 
     const [score, setScore] = useState<number>(0);
 
@@ -289,13 +290,20 @@ const Gaigel: React.FC<Props> = () => {
 
     // @ts-ignore
     useEffect(() => {
-        const newSocket = socketIOClient("https://gaigel-web.herokuapp.com/");
+        let domain = "https://gaigel-web.herokuapp.com/";
         if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-            const newSocket = socketIOClient("http://127.0.0.1:5000");
+            domain = "http://127.0.0.1:5000";
         }
+
+        const newSocket = socketIOClient(domain);
 
         // @ts-ignore
         setSocket(newSocket);
+
+        newSocket.on("onConnect", (data: string) => {
+            setOwnSocketId(data);
+            console.log("Here");
+        });
 
         newSocket.on("setLoggedIn", (data: boolean) => {
             setLoggedIn(data);
@@ -423,7 +431,9 @@ const Gaigel: React.FC<Props> = () => {
 
                     <hr style={{ width: "100%" }} />
 
-                    {clickedOpening && <OpeningInstructions />}
+                    {clickedOpening && (
+                        <OpeningInstructions setClickedOpening={setClickedOpening} />
+                    )}
 
                     {showEndPopup && (
                         <EndPopup
@@ -458,6 +468,8 @@ const Gaigel: React.FC<Props> = () => {
                     <YourCards
                         userCards={yourCards}
                         playCard={playCard}
+                        ownSocketId={ownSocketId}
+                        playerWithTurnSocketId={playerWithTurn.socketId}
                         toggleShowInstructions={toggleShowInstructions}
                     />
                 </>

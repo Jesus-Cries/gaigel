@@ -38,6 +38,8 @@ io.on("connection", (socket) => {
     players.push(new classes.Player(socket));
     console.log(`${players.length} | New client connected (${socket.id})`);
 
+    socket.emit("onConnect", `${socket.id}`);
+
     // Logic for joining / creating a lobby
     socket.on("joinLobby", (data) => {
         let gameToJoin = games.find((element) => element.lobbycode === data.lobbycode);
