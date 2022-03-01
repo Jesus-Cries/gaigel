@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: "center",
             alignContent: "center",
             alignItems: "center",
-            gap: "5px",
             overflow: "hidden",
             borderRadius: "5px",
         },

@@ -59,6 +59,7 @@ const PlayedCards: React.FC<Props> = ({ playedCards, playerCount, opening }) => 
             <Grid container spacing={1} justifyContent="center">
                 {cards.map((card) => {
                     i++;
+                    let removeMe = i === 1 ? true : false;
                     return (
                         <Grid item key={i}>
                             <GaigelCard
@@ -66,6 +67,7 @@ const PlayedCards: React.FC<Props> = ({ playedCards, playerCount, opening }) => 
                                 value={card.value}
                                 clickable={false}
                                 hidden={hidden}
+                                winnerCard={removeMe}
                             />
                         </Grid>
                     );

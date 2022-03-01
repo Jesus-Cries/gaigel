@@ -5,24 +5,57 @@ import { Paper, Box, Typography, CardActionArea } from "@material-ui/core";
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
+            padding: 4,
+            position: "relative",
             zIndex: 10,
-            width: 40,
-            height: 60,
+            width: 44,
+            height: 64,
             [theme.breakpoints.up("md")]: {
-                width: 50,
-                height: 75,
+                width: 54,
+                height: 79,
             },
-            border: "1px solid #ddd",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            overflow: "hidden",
+            boxShadow: "none",
+        },
+        winAnimation: {
+            "&::before": {
+                content: "''",
+                position: "absolute",
+                width: "60%",
+                height: "160%",
+                background: "linear-gradient(90deg, #ffffff,#ff9100, #ffffff)",
+                // background: "#00ccee",
+                animation: `$rotate 3s linear infinite`,
+            },
+            "&::after": {
+                content: "''",
+                position: "absolute",
+                background: "white",
+                inset: "4px",
+                borderRadius: "5px",
+            },
+        },
+        "@keyframes rotate": {
+            "0%": {
+                transform: "rotate(0deg)",
+            },
+            "100%": {
+                transform: "rotate(360deg)",
+            },
         },
         cardActionArea: {
+            zIndex: 20,
             height: "100%",
             width: "100%",
             display: "flex",
+            border: "1px solid #ddd",
+            borderRadius: 4,
         },
         card: {
+            zIndex: 20,
             height: "100%",
             [theme.breakpoints.up("md")]: {
                 height: "95%",
@@ -49,13 +82,21 @@ interface Props {
     clickable: boolean;
     playCard?: (type: string, value: string) => void;
     hidden?: boolean;
+    winnerCard?: boolean;
 }
 
 interface Hash {
     [details: string]: string;
 }
 
-const GaigelCard: React.FC<Props> = ({ type, value, clickable, playCard, hidden = false }) => {
+const GaigelCard: React.FC<Props> = ({
+    type,
+    value,
+    clickable,
+    playCard,
+    hidden = false,
+    winnerCard = false,
+}) => {
     const classes = useStyles();
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.up("md"));
@@ -69,7 +110,7 @@ const GaigelCard: React.FC<Props> = ({ type, value, clickable, playCard, hidden 
 
     return (
         <Paper
-            className={classes.root}
+            className={winnerCard ? `${classes.root} ${classes.winAnimation}` : `${classes.root}`}
             onClick={() => {
                 if (clickable && typeof playCard !== "undefined") playCard(type, value);
             }}
@@ -81,8 +122,8 @@ const GaigelCard: React.FC<Props> = ({ type, value, clickable, playCard, hidden 
                 {hidden && value !== "" ? (
                     <img
                         src={"/cardBacksite_noSpaceAround_n1.png"}
-                        width={matches ? "50" : "40"}
-                        height={matches ? "75" : "60"}
+                        width={matches ? "54" : "44"}
+                        height={matches ? "79" : "64"}
                         alt=""
                     />
                 ) : (
