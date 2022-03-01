@@ -19,11 +19,41 @@ const useStyles = makeStyles((theme: Theme) =>
             fontWeight: "lighter",
         },
         cardContainer: {
+            padding: 5,
+            position: "relative",
             display: "flex",
             justifyContent: "center",
             alignContent: "center",
             alignItems: "center",
             gap: "5px",
+            overflow: "hidden",
+            borderRadius: "5px",
+        },
+        turnAnimation: {
+            "&::before": {
+                content: "''",
+                position: "absolute",
+                width: "120%",
+                height: "60%",
+                background: "linear-gradient(#ffffff,#00ccee, #ffffff)",
+                // background: "#00ccee",
+                animation: `$rotate 6s linear infinite`,
+            },
+            "&::after": {
+                content: "''",
+                position: "absolute",
+                background: "white",
+                inset: "5px",
+                borderRadius: "5px",
+            },
+        },
+        "@keyframes rotate": {
+            "0%": {
+                transform: "rotate(0deg)",
+            },
+            "100%": {
+                transform: "rotate(360deg)",
+            },
         },
         cardsButtonContainer: {
             width: "100%",
@@ -44,10 +74,18 @@ interface CardProps {
 interface Props {
     userCards: CardProps[];
     playCard: (type: string, value: string) => void;
+    ownSocketId: string;
+    playerWithTurnSocketId: string;
     toggleShowInstructions: () => void;
 }
 
-const YourCards: React.FC<Props> = ({ userCards, playCard, toggleShowInstructions }) => {
+const YourCards: React.FC<Props> = ({
+    userCards,
+    playCard,
+    ownSocketId,
+    playerWithTurnSocketId,
+    toggleShowInstructions,
+}) => {
     const classes = useStyles();
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.up("md"));
@@ -67,7 +105,14 @@ const YourCards: React.FC<Props> = ({ userCards, playCard, toggleShowInstruction
             <Box className={classes.cardsButtonContainer}>
                 <HelpButton toggleShowInstructions={toggleShowInstructions} invisible={true} />
 
-                <Box className={classes.cardContainer}>
+                <Box
+                    className={
+                        ownSocketId === playerWithTurnSocketId
+                            ? `${classes.cardContainer} ${classes.turnAnimation}`
+                            : `${classes.cardContainer}`
+                    }
+                    style={ownSocketId === playerWithTurnSocketId ? {} : {}}
+                >
                     {filledUserCards.map((card, index) => {
                         let currentClickable = card.type === "" ? false : true;
                         return (

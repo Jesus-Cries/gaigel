@@ -4,7 +4,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
-import { Box, Typography, Card, Button, IconButton, MobileStepper } from "@material-ui/core";
+import { Box, Typography, Card, IconButton, MobileStepper } from "@material-ui/core";
 import { useState } from "react";
 
 import InstructionPage from "./InstructionPages/InstructionPage";
