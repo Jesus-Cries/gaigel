@@ -112,7 +112,7 @@ const Instructions: React.FC<Props> = ({ toggleShowInstructions }) => {
                         "Bei Gaigel kann die Vorhand, also die Person, die am Anfang der Runde als Erste ausspielen darf, zwischen vier verschiedenen Eröffnungen wählen. Diese werden auf dieser und der nächsten Seite erklärt.",
                 },
                 {
-                    title: "Andere Alte hat",
+                    title: "Andere Alte",
                     content:
                         "Bei dieser Eröffnungsmöglichkeit wird ein Ass verdeckt durch die Vorhand gespielt. Alle anderen Spieler spielen nun auch verdeckt jeweils eine Karte. Der Stich gehört dem Spieler, der das gleiche Ass wie die Vorhand gespielt hat. Ist dies nicht der Fall, gehört der Stich der Vorhand.",
                 },
@@ -186,6 +186,7 @@ const Instructions: React.FC<Props> = ({ toggleShowInstructions }) => {
                 <IconButton onClick={pageUp}>
                     <ArrowForwardIosIcon fontSize={matches ? "large" : "medium"} />
                 </IconButton>
+
                 <IconButton className={classes.closeButton} onClick={toggleShowInstructions}>
                     <CloseIcon fontSize={matches ? "large" : "medium"} />
                 </IconButton>

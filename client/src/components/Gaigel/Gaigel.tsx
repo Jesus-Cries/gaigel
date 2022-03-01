@@ -423,7 +423,9 @@ const Gaigel: React.FC<Props> = () => {
 
                     <hr style={{ width: "100%" }} />
 
-                    {clickedOpening && <OpeningInstructions />}
+                    {clickedOpening && (
+                        <OpeningInstructions setClickedOpening={setClickedOpening} />
+                    )}
 
                     {showEndPopup && (
                         <EndPopup

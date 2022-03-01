@@ -2,6 +2,7 @@ import { makeStyles, Theme, useTheme, createStyles } from "@material-ui/core/sty
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Box, IconButton, Typography, Card, MobileStepper } from "@material-ui/core";
 import { useState } from "react";
+import CloseIcon from "@material-ui/icons/Close";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
@@ -32,12 +33,19 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: "center",
             gap: "20px",
         },
+        closeButton: {
+            position: "absolute",
+            top: "0px",
+            right: "0px",
+        },
     })
 );
 
-interface Props {}
+interface Props {
+    setClickedOpening: (newValue: boolean) => void;
+}
 
-const OpeningInstructions: React.FC<Props> = () => {
+const OpeningInstructions: React.FC<Props> = ({ setClickedOpening }) => {
     const classes = useStyles();
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.up("md"));
@@ -50,7 +58,7 @@ const OpeningInstructions: React.FC<Props> = () => {
         "Bei Höher hat wird eine Karte verdeckt ausgespielt, welche weder ein Ass, noch ein Trumpf ist. Auch die anderen Spieler spielen jeweils eine verdeckte Karte aus. Der Stich geht an den Spieler, welcher eine Karte mit der gleichen Farbe, aber mit höherem Wert gelegt hat. Wird keine Karte der gleichen Farbe mit höherem Wert gelegt, so geht der Stich an die Vorhand.",
         "Eine weitere Eröffnungsmöglichkeit ist Dissle. Sagt die Vorhand zu Beginn des Spiels, dass auf Dissle gespielt wird, so gewinnt die Vorhand das Spiel, falls sie im Verlauf des Spiels fünf Siebener gleichzeitig besitzt. Die Gegner können bereits vorher das reguläre Spielende erreichen. Die Vorhand hat das Spiel verloren, wenn sie einen Stich gewinnt.",
     ];
-    let instructionTitles: string[] = ["Andere Alte hat", "Ge-Elfen", "Höher hat", "Auf Dissle"];
+    let instructionTitles: string[] = ["Andere Alte", "Ge-Elfen", "Höher hat", "Auf Dissle"];
 
     const pageDown = () => {
         let newPage = currentPage - 1 < 0 ? 3 : currentPage - 1;
@@ -73,6 +81,15 @@ const OpeningInstructions: React.FC<Props> = () => {
                 </Typography>
                 <IconButton onClick={pageUp}>
                     <ArrowForwardIosIcon />
+                </IconButton>
+
+                <IconButton
+                    className={classes.closeButton}
+                    onClick={() => {
+                        setClickedOpening(false);
+                    }}
+                >
+                    <CloseIcon fontSize={matches ? "large" : "medium"} />
                 </IconButton>
             </Box>
 
