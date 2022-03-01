@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         playerList: {
             marginTop: 10,
-            marginBottom: 10,
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -132,23 +131,26 @@ const LobbyPage: React.FC<Props> = ({
                         </Box>
                     );
                 })}
+                <Typography
+                    align="center"
+                    variant={matches ? "h6" : "body1"}
+                    className={classes.lighterFontWeight}
+                    style={{ marginTop: 10 }}
+                >
+                    Bereit: {amountReadyPlayers} / {playerInformation.length}
+                </Typography>
             </Box>
 
             <hr style={{ width: "100%" }} />
 
             <Box className={classes.controllContainer}>
-                <Typography
-                    variant={matches ? "h6" : "body1"}
-                    className={classes.lighterFontWeight}
-                >
-                    Bereit: {amountReadyPlayers} / {playerInformation.length}
-                </Typography>
                 <Button
                     className={classes.readyButton}
                     variant="contained"
                     disabled={ready}
                     onClick={handleOnClick}
                     size={matches ? "large" : "small"}
+                    style={{ width: "75%" }}
                 >
                     Bereit
                 </Button>
