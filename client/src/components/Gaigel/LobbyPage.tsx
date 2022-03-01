@@ -131,31 +131,31 @@ const LobbyPage: React.FC<Props> = ({
                         </Box>
                     );
                 })}
-                <Typography
-                    align="center"
-                    variant={matches ? "h6" : "body1"}
-                    className={classes.lighterFontWeight}
-                    style={{ marginTop: 10 }}
-                >
-                    Bereit: {amountReadyPlayers} / {playerInformation.length}
-                </Typography>
             </Box>
 
             <hr style={{ width: "100%" }} />
 
             <Box className={classes.controllContainer}>
-                <Button
-                    className={classes.readyButton}
-                    variant="contained"
-                    disabled={ready}
-                    onClick={handleOnClick}
-                    size={matches ? "large" : "small"}
-                    style={{ width: "75%" }}
+                <Typography
+                    align="center"
+                    variant={matches ? "h6" : "body1"}
+                    className={classes.lighterFontWeight}
                 >
-                    Bereit
-                </Button>
+                    Bereit: {amountReadyPlayers} / {playerInformation.length}
+                </Typography>
                 <HelpButton toggleShowInstructions={toggleShowInstructions} />
             </Box>
+
+            <Button
+                className={classes.readyButton}
+                variant="contained"
+                disabled={ready}
+                onClick={handleOnClick}
+                size={matches ? "large" : "small"}
+                style={{ width: "100%" }}
+            >
+                Bereit
+            </Button>
         </Box>
     );
 };

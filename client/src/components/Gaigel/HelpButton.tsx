@@ -28,7 +28,7 @@ const HelpButton: React.FC<Props> = ({ toggleShowInstructions, invisible = false
 
     return (
         <Fab
-            size={matches ? "large" : "small"}
+            size={matches ? "medium" : "small"}
             className={classes.root}
             onClick={toggleShowInstructions}
             disabled={invisible}
