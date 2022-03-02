@@ -139,6 +139,11 @@ const Gaigel: React.FC<Props> = () => {
     // If no card should be highlighted set the value to -1
     const [highlightedCardIndex, setHighlightedCardIndex] = useState<number>(-1);
 
+    const [highlightedPlayer, setHighlightedPlayer] = useState<PlayerProps>({
+        username: "",
+        socketId: "",
+    });
+
     // The cards that can still be drawn from the talon
     const [talonCards, setTalonCards] = useState<CardProps[]>(
         new Array(0).fill({ type: "", value: "" })
@@ -389,7 +394,10 @@ const Gaigel: React.FC<Props> = () => {
 
         newSocket.on("setHighlightedCardIndex", (data: number) => {
             setHighlightedCardIndex(data);
-            console.log(`The card at index ${data} has won`);
+        });
+
+        newSocket.on("setHighlightedPlayer", (data: PlayerProps) => {
+            setHighlightedPlayer(data);
         });
 
         return () => newSocket.close();
@@ -425,7 +433,11 @@ const Gaigel: React.FC<Props> = () => {
                         lobbycode={lobbyInformation.lobbycode}
                         score={score}
                     />
-                    <PlayerList order={order} playerWithTurn={playerWithTurn} />
+                    <PlayerList
+                        order={order}
+                        playerWithTurn={playerWithTurn}
+                        highlightedPlayer={highlightedPlayer}
+                    />
                     <hr style={{ width: "100%" }} />
                     <Box className={classes.talonAndTrump}>
                         <Talon cardsLeft={talonCards.length} drawCard={drawCard} />

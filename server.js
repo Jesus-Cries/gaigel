@@ -346,6 +346,10 @@ function startGame(currentGame) {
     };
     io.in(currentGame.lobbycode).emit("setPlayerWithTurn", playerWithTurn);
     io.in(currentGame.lobbycode).emit("setHighlightedCardIndex", -1);
+    io.in(currentGame.lobbycode).emit("setHighlightedPlayer", {
+        username: "",
+        socketId: "",
+    });
 
     currentGame.players[0].vorhand = true;
 
@@ -482,6 +486,14 @@ function acceptPlayedCard(socket, player, currentGame, data) {
 // Function that is called at the end of every round
 function endRound(currentGame, winnerIndex) {
     let winningPlayer = currentGame.players[winnerIndex];
+
+    // Share information about the player and card who the Stich for highlighting
+    io.in(currentGame.lobbycode).emit("setHighlightedCardIndex", winnerIndex);
+    io.in(currentGame.lobbycode).emit("setHighlightedPlayer", {
+        username: winningPlayer.username,
+        socketId: winningPlayer.socket.id,
+    });
+
     if (winningPlayer.vorhand === true && currentGame.opening === "AufDissle") {
         io.in(currentGame.lobbycode).emit("lostAufDissle", winningPlayer.username);
         let winner = currentGame.players[0];
@@ -547,8 +559,6 @@ function endRound(currentGame, winnerIndex) {
         return { username: player.username, socketId: player.socket.id };
     });
 
-    io.in(currentGame.lobbycode).emit("setOrder", orderInfo);
-
     let playerWithTurn = {
         username: currentGame.order[0].username,
         socketId: currentGame.order[0].socket.id,
@@ -560,6 +570,7 @@ function endRound(currentGame, winnerIndex) {
     });
 
     setTimeout(() => {
+        io.in(currentGame.lobbycode).emit("setOrder", orderInfo);
         io.in(currentGame.lobbycode).emit("setPlayerWithTurn", playerWithTurn);
         currentGame.players.forEach((player) => {
             drawCard(currentGame.lobbycode, 1, player);
@@ -639,7 +650,6 @@ function processAndereAlteHat(socket, data, player, currentGame) {
                         player.playedCard.value == currentGame.playedCards[0].value
                 );
         }
-        io.in(currentGame.lobbycode).emit("setHighlightedCardIndex", winnerIndex);
         endRound(currentGame, winnerIndex);
     }
 }
@@ -653,7 +663,6 @@ function processGeElfen(socket, data, player, currentGame) {
         acceptPlayedCard(socket, player, currentGame, data);
     }
     if (currentGame.order.length === 0) {
-        io.in(currentGame.lobbycode).emit("setHighlightedCardIndex", 0);
         endRound(currentGame, 0);
     }
 }
@@ -693,7 +702,6 @@ function processHöherHat(socket, data, player, currentGame) {
                 (player) => player === playerWithHighestPoints
             );
         }
-        io.in(currentGame.lobbycode).emit("setHighlightedCardIndex", winnerIndex);
         endRound(currentGame, winnerIndex);
         currentGame.opening = "";
     }
@@ -721,7 +729,6 @@ function processNormalRound(socket, data, player, currentGame) {
     if (currentGame.order.length === 0) {
         // If currrent round is over
         let winnerIndex = decideWinner(currentGame);
-        io.in(currentGame.lobbycode).emit("setHighlightedCardIndex", winnerIndex);
         endRound(currentGame, winnerIndex);
     }
 }
