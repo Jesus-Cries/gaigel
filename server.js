@@ -802,8 +802,8 @@ function createTalon() {
     let types = ["Eichel", "Blatt", "Herz", "Schellen"];
     // let types = ["Eichel", "Blatt"];
     // let types = ["Eichel"];
-    // let values = ["7", "U", "O", "K", "10", "A"];
-    let values = ["K", "10", "A"];
+    let values = ["7", "U", "O", "K", "10", "A"];
+    // let values = ["K", "10", "A"];
     let newTalon = [];
 
     types.forEach((type) =>
