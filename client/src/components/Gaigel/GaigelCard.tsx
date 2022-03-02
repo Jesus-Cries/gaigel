@@ -5,6 +5,7 @@ import { Paper, Box, Typography, CardActionArea } from "@material-ui/core";
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
+            zIndex: 10,
             width: 40,
             height: 60,
             [theme.breakpoints.up("md")]: {

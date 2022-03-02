@@ -9,7 +9,7 @@ import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            zIndex: 100,
+            // zIndex: 100,
             backgroundColor: "#fafafa",
             boxShadow: "4px 4px 15px #444",
         },
@@ -28,7 +28,7 @@ const HelpButton: React.FC<Props> = ({ toggleShowInstructions, invisible = false
 
     return (
         <Fab
-            size={matches ? "large" : "small"}
+            size={matches ? "medium" : "small"}
             className={classes.root}
             onClick={toggleShowInstructions}
             disabled={invisible}
