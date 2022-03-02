@@ -237,9 +237,11 @@ function endGame(currentGame, winnerIndex) {
 
     console.log(endInformation);
 
-    io.in(currentGame.lobbycode).emit("setEndInformation", endInformation);
-    io.in(currentGame.lobbycode).emit("setShowEndPopup", true);
-    currentGame.waitingForNextRound = true;
+    setTimeout(() => {
+        io.in(currentGame.lobbycode).emit("setEndInformation", endInformation);
+        io.in(currentGame.lobbycode).emit("setShowEndPopup", true);
+        currentGame.waitingForNextRound = true;
+    }, 5000);
 
     setTimeout(() => {
         if (currentGame.waitingForNextRound) {
@@ -343,6 +345,7 @@ function startGame(currentGame) {
         socketId: currentGame.order[0].socket.id,
     };
     io.in(currentGame.lobbycode).emit("setPlayerWithTurn", playerWithTurn);
+    io.in(currentGame.lobbycode).emit("setHighlightedCardIndex", -1);
 
     currentGame.players[0].vorhand = true;
 
@@ -515,7 +518,7 @@ function endRound(currentGame, winnerIndex) {
         player.socket.emit("setScore", player.score);
     });
 
-    if (winningPlayer.score >= 101) {
+    if (winningPlayer.score >= 41) {
         endGame(currentGame, winnerIndex);
         return;
     } else if (winningPlayer.cards.length === 0 && currentGame.talon.length === 0) {
@@ -791,7 +794,7 @@ function processMelden(socket, data, player, currentGame) {
             player.score += 20;
         }
 
-        if (player.score >= 101) {
+        if (player.score >= 41) {
             let winnerIndex = currentGame.players.findIndex(
                 (element) => element.socket.id === player.socket.id
             );
