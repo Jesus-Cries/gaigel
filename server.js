@@ -543,7 +543,9 @@ function endRound(currentGame, winnerIndex) {
     let orderInfo = currentGame.order.map((player) => {
         return { username: player.username, socketId: player.socket.id };
     });
+
     io.in(currentGame.lobbycode).emit("setOrder", orderInfo);
+
     let playerWithTurn = {
         username: currentGame.order[0].username,
         socketId: currentGame.order[0].socket.id,
