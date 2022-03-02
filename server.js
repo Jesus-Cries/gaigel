@@ -515,7 +515,7 @@ function endRound(currentGame, winnerIndex) {
         player.socket.emit("setScore", player.score);
     });
 
-    if (winningPlayer.score >= 21) {
+    if (winningPlayer.score >= 101) {
         endGame(currentGame, winnerIndex);
         return;
     } else if (winningPlayer.cards.length === 0 && currentGame.talon.length === 0) {
@@ -548,9 +548,14 @@ function endRound(currentGame, winnerIndex) {
         username: currentGame.order[0].username,
         socketId: currentGame.order[0].socket.id,
     };
-    io.in(currentGame.lobbycode).emit("setPlayerWithTurn", playerWithTurn);
+
+    io.in(currentGame.lobbycode).emit("setPlayerWithTurn", {
+        username: "",
+        socketId: "",
+    });
 
     setTimeout(() => {
+        io.in(currentGame.lobbycode).emit("setPlayerWithTurn", playerWithTurn);
         currentGame.players.forEach((player) => {
             drawCard(currentGame.lobbycode, 1, player);
             io.to(player.socket.id).emit("setYourCards", player.cards);
@@ -560,7 +565,7 @@ function endRound(currentGame, winnerIndex) {
         io.in(currentGame.lobbycode).emit("setTalon", currentGame.talon);
 
         io.in(currentGame.lobbycode).emit("setInfoType", { type: "newCards", detail: "" });
-    }, 1000);
+    }, 4000);
 }
 
 // Function that checks if a player can use the utility "Rauben"
@@ -784,7 +789,7 @@ function processMelden(socket, data, player, currentGame) {
             player.score += 20;
         }
 
-        if (player.score >= 21) {
+        if (player.score >= 101) {
             let winnerIndex = currentGame.players.findIndex(
                 (element) => element.socket.id === player.socket.id
             );
