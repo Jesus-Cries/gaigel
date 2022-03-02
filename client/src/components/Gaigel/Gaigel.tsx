@@ -94,7 +94,7 @@ const Gaigel: React.FC<Props> = () => {
     // Boolean for deciding on whether to show the lobby page or the game
     const [gameStarted, setGameStarted] = useState<boolean>(false);
 
-    const [showInstructions, setShowInstructions] = useState<boolean>(true);
+    const [showInstructions, setShowInstructions] = useState<boolean>(false);
 
     const [ownUsername, setOwnUsername] = useState<string>("");
 
@@ -390,6 +390,10 @@ const Gaigel: React.FC<Props> = () => {
         newSocket.on("lostAufDissle", (data: string) => {
             setLostAufDissle(true);
             setLosingPlayer(data);
+        });
+
+        newSocket.on("resetLostAufDissle", () => {
+            setLostAufDissle(false);
         });
 
         return () => newSocket.close();

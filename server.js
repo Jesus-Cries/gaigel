@@ -245,6 +245,7 @@ function endGame(currentGame, winnerIndex) {
             startGame(currentGame);
             io.in(currentGame.lobbycode).emit("setShowEndPopup", false);
             currentGame.waitingForNextRound = false;
+            io.in(currentGame.lobbycode).emit("resetLostAufDissle");
         }
     }, 20000);
 }
