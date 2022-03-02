@@ -84,7 +84,7 @@ interface Props {
     clickable: boolean;
     playCard?: (type: string, value: string) => void;
     hidden?: boolean;
-    winnerCard?: boolean;
+    highlighted?: boolean;
 }
 
 interface Hash {
@@ -97,7 +97,7 @@ const GaigelCard: React.FC<Props> = ({
     clickable,
     playCard,
     hidden = false,
-    winnerCard = false,
+    highlighted = false,
 }) => {
     const classes = useStyles();
     const theme = useTheme();
@@ -112,7 +112,7 @@ const GaigelCard: React.FC<Props> = ({
 
     return (
         <Paper
-            className={winnerCard ? `${classes.root} ${classes.winAnimation}` : `${classes.root}`}
+            className={highlighted ? `${classes.root} ${classes.winAnimation}` : `${classes.root}`}
             onClick={() => {
                 if (clickable && typeof playCard !== "undefined") playCard(type, value);
             }}

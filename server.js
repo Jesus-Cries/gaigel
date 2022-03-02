@@ -32,7 +32,6 @@ pointsMap.set("O", 3);
 pointsMap.set("K", 4);
 pointsMap.set("10", 10);
 pointsMap.set("A", 11);
-let i = 0;
 
 io.on("connection", (socket) => {
     players.push(new classes.Player(socket));
@@ -564,6 +563,7 @@ function endRound(currentGame, winnerIndex) {
     }, 1000);
 }
 
+// Function that checks if a player can use the utility "Rauben"
 function checkCanSteal(player, currentGame) {
     if (
         player.cards.filter(
@@ -629,6 +629,7 @@ function processAndereAlteHat(socket, data, player, currentGame) {
                         player.playedCard.value == currentGame.playedCards[0].value
                 );
         }
+        io.in(currentGame.lobbycode).emit("setHighlightedCardIndex", winnerIndex);
         endRound(currentGame, winnerIndex);
     }
 }
@@ -642,6 +643,7 @@ function processGeElfen(socket, data, player, currentGame) {
         acceptPlayedCard(socket, player, currentGame, data);
     }
     if (currentGame.order.length === 0) {
+        io.in(currentGame.lobbycode).emit("setHighlightedCardIndex", 0);
         endRound(currentGame, 0);
     }
 }
@@ -660,9 +662,12 @@ function processHöherHat(socket, data, player, currentGame) {
 
     if (currentGame.order.length === 0) {
         let winnerIndex = 0;
-        let beginnerPlayer = currentGame.players.find((player) => player.vorhand == true);
-        let notBeginnerPlayers = currentGame.players.filter((player) => player.vorhand == false);
+        let beginnerPlayer = currentGame.players.find((player) => player.vorhand === true);
+        let notBeginnerPlayers = currentGame.players.filter((player) => player.vorhand === false);
         let playerWithHighestPoints = beginnerPlayer;
+
+        console.log(`Length of beginnerPlayer: ${beginnerPlayer.length}`);
+        console.log(`Length of notBeginnerPlayers: ${notBeginnerPlayers.length}`);
 
         notBeginnerPlayers.forEach((player) => {
             if (
@@ -678,6 +683,7 @@ function processHöherHat(socket, data, player, currentGame) {
                 (player) => player === playerWithHighestPoints
             );
         }
+        io.in(currentGame.lobbycode).emit("setHighlightedCardIndex", winnerIndex);
         endRound(currentGame, winnerIndex);
         currentGame.opening = "";
     }
@@ -705,6 +711,7 @@ function processNormalRound(socket, data, player, currentGame) {
     if (currentGame.order.length === 0) {
         // If currrent round is over
         let winnerIndex = decideWinner(currentGame);
+        io.in(currentGame.lobbycode).emit("setHighlightedCardIndex", winnerIndex);
         endRound(currentGame, winnerIndex);
     }
 }
@@ -795,7 +802,8 @@ function createTalon() {
     let types = ["Eichel", "Blatt", "Herz", "Schellen"];
     // let types = ["Eichel", "Blatt"];
     // let types = ["Eichel"];
-    let values = ["7", "U", "O", "K", "10", "A"];
+    // let values = ["7", "U", "O", "K", "10", "A"];
+    let values = ["K", "10", "A"];
     let newTalon = [];
 
     types.forEach((type) =>

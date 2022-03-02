@@ -19,23 +19,29 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-interface Props {
-    playedCards: CardProps[];
-    playerCount: number;
-    opening: string;
-}
-
 interface CardProps {
     type: string;
     value: string;
 }
 
-const PlayedCards: React.FC<Props> = ({ playedCards, playerCount, opening }) => {
+interface Props {
+    playedCards: CardProps[];
+    playerCount: number;
+    opening: string;
+    highlightedCardIndex: number;
+}
+
+const PlayedCards: React.FC<Props> = ({
+    playedCards,
+    playerCount,
+    opening,
+    highlightedCardIndex,
+}) => {
     const classes = useStyles();
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.up("md"));
 
-    let i: number = 0;
+    let i: number = -1;
     let hidden: boolean = opening === "AndereAlteHat" || opening === "HöherHat";
 
     const [cards, setCards] = useState<CardProps[]>(
@@ -59,7 +65,7 @@ const PlayedCards: React.FC<Props> = ({ playedCards, playerCount, opening }) => 
             <Grid container spacing={1} justifyContent="center">
                 {cards.map((card) => {
                     i++;
-                    let removeMe = i === 1 ? true : false;
+                    let highlighted = i === highlightedCardIndex;
                     return (
                         <Grid item key={i}>
                             <GaigelCard
@@ -67,7 +73,7 @@ const PlayedCards: React.FC<Props> = ({ playedCards, playerCount, opening }) => 
                                 value={card.value}
                                 clickable={false}
                                 hidden={hidden}
-                                winnerCard={removeMe}
+                                highlighted={highlighted}
                             />
                         </Grid>
                     );
