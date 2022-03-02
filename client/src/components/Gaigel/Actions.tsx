@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
             zIndex: 10,
         },
         callButtonContainer: {
-            padding: 4,
+            padding: 8,
             position: "relative",
             display: "flex",
             justifyContent: "center",
