@@ -25,33 +25,34 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: "center",
             alignContent: "center",
             alignItems: "center",
-            overflow: "hidden",
-            borderRadius: "5px",
+            borderRadius: "4px",
         },
         turnAnimation: {
             "&::before": {
                 content: "''",
                 position: "absolute",
-                width: "120%",
-                height: "60%",
-                background: "linear-gradient(#ffffff,#00ccee, #ffffff)",
-                // background: "#00ccee",
-                animation: `$rotate 6s linear infinite`,
+                width: "85%",
+                height: "55%",
+                background: "radial-gradient(#ffffff,#ff9100)",
+                animation: `$pulsate 1000ms ${theme.transitions.easing.easeInOut} alternate infinite`,
+                borderRadius: "4px",
             },
             "&::after": {
                 content: "''",
                 position: "absolute",
                 background: "white",
                 inset: "5px",
-                borderRadius: "5px",
+                borderRadius: "4px",
             },
         },
-        "@keyframes rotate": {
+        "@keyframes pulsate": {
             "0%": {
-                transform: "rotate(0deg)",
+                width: "85%",
+                height: "55%",
             },
             "100%": {
-                transform: "rotate(360deg)",
+                width: "100%",
+                height: "100%",
             },
         },
         cardsButtonContainer: {

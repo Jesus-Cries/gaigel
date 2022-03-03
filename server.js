@@ -462,6 +462,14 @@ function declinePlayedCard(socket, player, currentGame) {
 
 // Function that is called everytime a played card is accepted
 function acceptPlayedCard(socket, player, currentGame, data) {
+    if (currentGame.playedCards.length === 0) {
+        io.in(currentGame.lobbycode).emit("setHighlightedCardIndex", -1);
+        io.in(currentGame.lobbycode).emit("setHighlightedPlayer", {
+            username: "",
+            socketId: "",
+        });
+    }
+
     player.playedCard = data;
     let cardIndex = player.cards.findIndex(
         (element) => element.type === data.type && element.value === data.value

@@ -17,33 +17,34 @@ const useStyles = makeStyles((theme: Theme) =>
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            overflow: "hidden",
             boxShadow: "none",
         },
         winAnimation: {
             "&::before": {
                 content: "''",
                 position: "absolute",
-                width: "60%",
-                height: "160%",
-                background: "linear-gradient(90deg, #ffffff,#ff9100, #ffffff)",
-                // background: "#00ccee",
-                animation: `$rotate 3s linear infinite`,
+                width: "65%",
+                height: "75%",
+                background: "radial-gradient(#ffffff,#ff9100)",
+                animation: `$pulsate 1000ms ${theme.transitions.easing.easeInOut} alternate forwards 5`,
+                borderRadius: "4px",
             },
             "&::after": {
                 content: "''",
                 position: "absolute",
                 background: "white",
                 inset: "4px",
-                borderRadius: "5px",
+                borderRadius: "4px",
             },
         },
-        "@keyframes rotate": {
+        "@keyframes pulsate": {
             "0%": {
-                transform: "rotate(0deg)",
+                width: "65%",
+                height: "75%",
             },
             "100%": {
-                transform: "rotate(360deg)",
+                width: "100%",
+                height: "100%",
             },
         },
         cardActionArea: {
