@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: "center",
             alignContent: "center",
             alignItems: "center",
-            overflow: "hidden",
             borderRadius: 4,
         },
         name: {
@@ -38,26 +37,32 @@ const useStyles = makeStyles((theme: Theme) =>
             "&::before": {
                 content: "''",
                 position: "absolute",
-                width: "50%",
-                height: "160%",
-                background: "linear-gradient(90deg, #ffffff,#ff9100, #ffffff)",
-                // background: "#00ccee",
-                animation: `$rotate 3s linear infinite`,
+                width: "65%",
+                height: "55%",
+                background: "radial-gradient(#ffffff,#ff9100)",
+                animation: `$pulsate 2000ms ${theme.transitions.easing.easeInOut} infinite`,
+                borderRadius: "4px",
             },
             "&::after": {
                 content: "''",
                 position: "absolute",
                 background: "white",
                 inset: "4px",
-                borderRadius: "5px",
+                borderRadius: "4px",
             },
         },
-        "@keyframes rotate": {
+        "@keyframes pulsate": {
             "0%": {
-                transform: "rotate(0deg)",
+                width: "65%",
+                height: "55%",
+            },
+            "50%": {
+                width: "100%",
+                height: "100%",
             },
             "100%": {
-                transform: "rotate(360deg)",
+                width: "65%",
+                height: "55%",
             },
         },
     })
