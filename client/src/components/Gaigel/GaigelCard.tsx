@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 width: "65%",
                 height: "75%",
                 background: "radial-gradient(#ffffff,#ff9100)",
-                animation: `$pulsate 2000ms ${theme.transitions.easing.easeInOut} infinite`,
+                animation: `$pulsate 1000ms ${theme.transitions.easing.easeInOut} alternate forwards 5`,
                 borderRadius: "4px",
             },
             "&::after": {
@@ -42,13 +42,9 @@ const useStyles = makeStyles((theme: Theme) =>
                 width: "65%",
                 height: "75%",
             },
-            "50%": {
+            "100%": {
                 width: "100%",
                 height: "100%",
-            },
-            "100%": {
-                width: "65%",
-                height: "75%",
             },
         },
         cardActionArea: {

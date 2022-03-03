@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 width: "80%",
                 height: "55%",
                 background: "radial-gradient(#ffffff,#ff9100)",
-                animation: `$pulsate 2000ms ${theme.transitions.easing.easeInOut} infinite`,
+                animation: `$pulsate 1000ms ${theme.transitions.easing.easeInOut} alternate forwards 5`,
                 borderRadius: "4px",
             },
             "&::after": {
@@ -45,13 +45,9 @@ const useStyles = makeStyles((theme: Theme) =>
                 width: "80%",
                 height: "55%",
             },
-            "50%": {
+            "100%": {
                 width: "100%",
                 height: "100%",
-            },
-            "100%": {
-                width: "80%",
-                height: "55%",
             },
         },
     })

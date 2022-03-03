@@ -32,9 +32,9 @@ const useStyles = makeStyles((theme: Theme) =>
                 content: "''",
                 position: "absolute",
                 width: "85%",
-                height: "65%",
+                height: "55%",
                 background: "radial-gradient(#ffffff,#ff9100)",
-                animation: `$pulsate 2000ms ${theme.transitions.easing.easeInOut} infinite`,
+                animation: `$pulsate 1000ms ${theme.transitions.easing.easeInOut} alternate infinite`,
                 borderRadius: "4px",
             },
             "&::after": {
@@ -48,15 +48,11 @@ const useStyles = makeStyles((theme: Theme) =>
         "@keyframes pulsate": {
             "0%": {
                 width: "85%",
-                height: "65%",
-            },
-            "50%": {
-                width: "100%",
-                height: "100%",
+                height: "55%",
             },
             "100%": {
-                width: "85%",
-                height: "65%",
+                width: "100%",
+                height: "100%",
             },
         },
         cardsButtonContainer: {
