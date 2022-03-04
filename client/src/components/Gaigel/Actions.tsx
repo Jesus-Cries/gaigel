@@ -24,12 +24,13 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         announcingAnimation: {
             "&::before": {
+                // zIndex: 30,
                 content: "''",
                 position: "absolute",
-                width: "80%",
-                height: "55%",
+                width: "calc(100% - 15px)",
+                height: "calc(100% - 15px)",
                 background: "radial-gradient(#ffffff,#ff9100)",
-                animation: `$pulsate 1000ms ${theme.transitions.easing.easeInOut} alternate forwards 5`,
+                animation: `$pulsate 1500ms infinite`,
                 borderRadius: "4px",
             },
             "&::after": {
@@ -42,12 +43,14 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         "@keyframes pulsate": {
             "0%": {
-                width: "80%",
-                height: "55%",
+                width: "calc(100% - 15px)",
+                height: "calc(100% - 15px)",
+                opacity: 2,
             },
             "100%": {
-                width: "100%",
-                height: "100%",
+                width: "calc(100% + 4px)",
+                height: "calc(100% + 4px)",
+                opacity: 0,
             },
         },
     })
