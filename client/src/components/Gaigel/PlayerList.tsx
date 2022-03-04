@@ -37,10 +37,10 @@ const useStyles = makeStyles((theme: Theme) =>
             "&::before": {
                 content: "''",
                 position: "absolute",
-                width: "65%",
-                height: "40%",
+                width: "calc(100% - 15px)",
+                height: "calc(100% - 15px)",
                 background: "radial-gradient(#ffffff,#ff9100)",
-                animation: `$pulsate 1000ms ${theme.transitions.easing.easeInOut} alternate forwards 5`,
+                animation: `$pulsate 1500ms 3`,
                 borderRadius: "4px",
             },
             "&::after": {
@@ -53,12 +53,14 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         "@keyframes pulsate": {
             "0%": {
-                width: "65%",
-                height: "40%",
+                width: "calc(100% - 15px)",
+                height: "calc(100% - 15px)",
+                opacity: 2,
             },
             "100%": {
-                width: "100%",
-                height: "100%",
+                width: "calc(100% + 4px)",
+                height: "calc(100% + 4px)",
+                opacity: 0,
             },
         },
     })
@@ -94,7 +96,13 @@ const PlayerList: React.FC<Props> = ({ order, playerWithTurn, highlightedPlayer 
                         <Typography
                             variant={matches ? "body1" : "body2"}
                             className={classes.name}
-                            style={{ border: turn ? "2px solid #ffe600" : "none" }}
+                            style={{
+                                border: highlighted
+                                    ? "2px solid #ff9100"
+                                    : turn
+                                    ? "2px solid #ffe600"
+                                    : "none",
+                            }}
                             key={index}
                         >
                             {index + 1}. {player.username}

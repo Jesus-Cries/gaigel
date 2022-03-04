@@ -29,12 +29,13 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         turnAnimation: {
             "&::before": {
+                // zIndex: 50,
                 content: "''",
                 position: "absolute",
-                width: "85%",
-                height: "55%",
+                width: "calc(100% - 15px)",
+                height: "calc(100% - 15px)",
                 background: "radial-gradient(#ffffff,#ff9100)",
-                animation: `$pulsate 1000ms ${theme.transitions.easing.easeInOut} alternate infinite`,
+                animation: `$pulsate 1500ms infinite`,
                 borderRadius: "4px",
             },
             "&::after": {
@@ -47,12 +48,14 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         "@keyframes pulsate": {
             "0%": {
-                width: "85%",
-                height: "55%",
+                width: "calc(100% - 15px)",
+                height: "calc(100% - 15px)",
+                opacity: 2,
             },
             "100%": {
-                width: "100%",
-                height: "100%",
+                width: "calc(100% + 5px)",
+                height: "calc(100% + 5px)",
+                opacity: 0,
             },
         },
         cardsButtonContainer: {

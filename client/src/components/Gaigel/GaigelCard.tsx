@@ -23,10 +23,10 @@ const useStyles = makeStyles((theme: Theme) =>
             "&::before": {
                 content: "''",
                 position: "absolute",
-                width: "65%",
-                height: "75%",
+                width: "calc(100% - 15px)",
+                height: "calc(100% - 15px)",
                 background: "radial-gradient(#ffffff,#ff9100)",
-                animation: `$pulsate 1000ms ${theme.transitions.easing.easeInOut} alternate forwards 5`,
+                animation: `$pulsate 1500ms 3`,
                 borderRadius: "4px",
             },
             "&::after": {
@@ -39,20 +39,22 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         "@keyframes pulsate": {
             "0%": {
-                width: "65%",
-                height: "75%",
+                width: "calc(100% - 15px)",
+                height: "calc(100% - 15px)",
+                opacity: 2,
             },
             "100%": {
-                width: "100%",
-                height: "100%",
+                width: "calc(100% + 4px)",
+                height: "calc(100% + 4px)",
+                opacity: 0,
             },
         },
+
         cardActionArea: {
             zIndex: 20,
             height: "100%",
             width: "100%",
             display: "flex",
-            border: "1px solid #ddd",
             borderRadius: 4,
             boxShadow:
                 "0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)",
@@ -120,7 +122,10 @@ const GaigelCard: React.FC<Props> = ({
         >
             <CardActionArea
                 className={classes.cardActionArea}
-                style={{ pointerEvents: clickable ? "auto" : "none" }}
+                style={{
+                    pointerEvents: clickable ? "auto" : "none",
+                    border: highlighted ? "1px solid #ff9100" : "1px solid #ddd",
+                }}
             >
                 {hidden && value !== "" ? (
                     <img
