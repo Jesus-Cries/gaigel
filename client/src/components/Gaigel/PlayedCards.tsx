@@ -39,7 +39,7 @@ const PlayedCards: React.FC<Props> = ({
 }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     let i: number = -1;
     let hidden: boolean = opening === "AndereAlteHat" || opening === "HöherHat";

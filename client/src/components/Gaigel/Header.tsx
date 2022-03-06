@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 marginLeft: 120,
                 marginRight: 120,
             },
-            [theme.breakpoints.up("md")]: {
+            [theme.breakpoints.up("lg")]: {
                 gap: "30px",
             },
 
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         logo: {
             width: "50px",
-            [theme.breakpoints.up("md")]: {
+            [theme.breakpoints.up("lg")]: {
                 width: "60px",
             },
         },
@@ -33,7 +33,7 @@ interface Props {}
 const Header: React.FC<Props> = () => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     return (
         <>

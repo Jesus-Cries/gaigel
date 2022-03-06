@@ -93,7 +93,7 @@ const YourCards: React.FC<Props> = ({
 }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     let filledUserCards: CardProps[] = userCards.slice();
 

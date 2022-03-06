@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
             [theme.breakpoints.down("sm")]: {
                 maxWidth: "420px",
             },
-            [theme.breakpoints.up("md")]: {
+            [theme.breakpoints.up("lg")]: {
                 maxWidth: "800px",
             },
             padding: 20,
@@ -51,7 +51,7 @@ interface Props {
 const LandingPage: React.FC<Props> = ({ login, toggleShowInstructions }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     const [username, setUsername] = useState<string>("");
     const [lobbycode, setLobbycode] = useState<string>("");

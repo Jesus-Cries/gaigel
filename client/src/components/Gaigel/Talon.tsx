@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
         paper: {
             width: 40,
             height: 60,
-            [theme.breakpoints.up("md")]: {
+            [theme.breakpoints.up("lg")]: {
                 width: 50,
                 height: 75,
             },
@@ -44,7 +44,7 @@ interface Props {
 const Talon: React.FC<Props> = ({ cardsLeft, drawCard }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     return (
         <Grid item className={classes.root}>

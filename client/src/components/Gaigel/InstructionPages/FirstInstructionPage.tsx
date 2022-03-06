@@ -59,7 +59,7 @@ interface Props {}
 const FirstInstructionPage: React.FC<Props> = () => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     const [currentCard, setCurrentCard] = useState<CardProps>({ type: "Eichel", value: "A" });
 

@@ -87,7 +87,7 @@ const Gaigel: React.FC<Props> = () => {
     // MARK: States
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     // Boolean for deciding on whether to show the landing page or the lobby
     const [loggedIn, setLoggedIn] = useState<boolean>(false);

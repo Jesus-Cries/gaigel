@@ -24,7 +24,7 @@ interface Props {
 const HelpButton: React.FC<Props> = ({ toggleShowInstructions, invisible = false }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     return (
         <Fab

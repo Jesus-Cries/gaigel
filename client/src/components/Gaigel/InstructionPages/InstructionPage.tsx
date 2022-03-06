@@ -41,7 +41,7 @@ interface Props {
 const InstructionPage: React.FC<Props> = ({ page }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     return (
         <Box className={classes.root}>
