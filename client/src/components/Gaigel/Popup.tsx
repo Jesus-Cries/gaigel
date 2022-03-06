@@ -105,7 +105,7 @@ const Popup: React.FC<Props> = ({ snackbarType, type, detail, reset }) => {
                 severity={snackbarType === "warning" ? "warning" : "info"}
                 className={classes.alert}
             >
-                {message} {type}
+                {message}
             </Alert>
         </Snackbar>
     );
