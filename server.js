@@ -827,7 +827,7 @@ function processMelden(socket, data, player, currentGame) {
 function createTalon() {
     let types = ["Eichel", "Blatt", "Herz", "Schellen"];
     // let types = ["Eichel", "Blatt"];
-    // let types = ["Eichel"];
+    //let types = ["Eichel"];
     let values = ["7", "U", "O", "K", "10", "A"];
     // let values = ["K", "10", "A"];
     let newTalon = [];
@@ -869,6 +869,9 @@ function drawCard(lobbycode, amount, player) {
     if (player.cards.length < 5 && currentGame.talon.length > 0) {
         // Gets last cards of the talon array and removes them
         let drawnCards = currentGame.talon.slice(currentGame.talon.length - amount);
+        if (amount === 1) {
+            player.socket.emit("newCard", drawnCards[0]);
+        }
         currentGame.talon = currentGame.talon.slice(0, currentGame.talon.length - amount);
 
         let newUserCards = player.cards;

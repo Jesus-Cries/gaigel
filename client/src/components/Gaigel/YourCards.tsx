@@ -80,6 +80,7 @@ interface Props {
     ownSocketId: string;
     playerWithTurnSocketId: string;
     toggleShowInstructions: () => void;
+    newCard: CardProps;
 }
 
 const YourCards: React.FC<Props> = ({
@@ -88,6 +89,7 @@ const YourCards: React.FC<Props> = ({
     ownSocketId,
     playerWithTurnSocketId,
     toggleShowInstructions,
+    newCard,
 }) => {
     const classes = useStyles();
     const theme = useTheme();
@@ -118,6 +120,12 @@ const YourCards: React.FC<Props> = ({
                 >
                     {filledUserCards.map((card, index) => {
                         let currentClickable = card.type === "" ? false : true;
+                        let highlightedCard =
+                            card.type === newCard.type &&
+                            card.value === newCard.value &&
+                            newCard.value !== "" &&
+                            userCards.length === 5;
+
                         return (
                             <GaigelCard
                                 type={card.type}
@@ -125,6 +133,8 @@ const YourCards: React.FC<Props> = ({
                                 clickable={currentClickable}
                                 playCard={playCard}
                                 key={index}
+                                highlighted={highlightedCard}
+                                keepHighlighting={false}
                             />
                         );
                     })}

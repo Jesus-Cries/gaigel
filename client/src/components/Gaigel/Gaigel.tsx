@@ -169,6 +169,12 @@ const Gaigel: React.FC<Props> = () => {
 
     const [losingPlayer, setLosingPlayer] = useState<string>("");
 
+    const [canPlayAndereAlte, setCanPlayAndereAlte] = useState<boolean>(true);
+    const [canPlayGeElfen, setCanPlayGeElfen] = useState<boolean>(true);
+    const [canPlayHöherHat, setCanPlayHöherHat] = useState<boolean>(true);
+
+    const [newCard, setNewcard] = useState<CardProps>({ type: "", value: "" });
+
     const toggleShowInstructions = () => {
         let newValue: boolean = !showInstructions;
         setShowInstructions(newValue);
@@ -297,6 +303,21 @@ const Gaigel: React.FC<Props> = () => {
         setSocket(socket);
     }, []);
 
+    useEffect(() => {
+        if (!Opening) return;
+
+        let playerHasAce: boolean = yourCards.filter((card) => card.value === "A").length > 0;
+
+        setCanPlayAndereAlte(playerHasAce);
+        setCanPlayGeElfen(playerHasAce);
+
+        let hasNonTrumpNonAceCard =
+            yourCards.filter((card) => trumpCard.type !== card.type && card.value !== "A").length >
+            1;
+
+        setCanPlayHöherHat(hasNonTrumpNonAceCard);
+    }, [yourCards]);
+
     // @ts-ignore
     useEffect(() => {
         let domain = "https://gaigel-web.herokuapp.com/";
@@ -400,6 +421,10 @@ const Gaigel: React.FC<Props> = () => {
             setHighlightedPlayer(data);
         });
 
+        newSocket.on("newCard", (data: CardProps) => {
+            setNewcard(data);
+        });
+
         return () => newSocket.close();
     }, [setSocket]);
 
@@ -483,6 +508,9 @@ const Gaigel: React.FC<Props> = () => {
                             HöherHat={HöherHat}
                             AufDissle={AufDissle}
                             handleClick={onClickOpening}
+                            canPlayHöherHat={canPlayHöherHat}
+                            canPlayGeElfen={canPlayGeElfen}
+                            canPlayAndereAlte={canPlayAndereAlte}
                             hover={clickedOpening}
                         />
                     )}
@@ -493,6 +521,7 @@ const Gaigel: React.FC<Props> = () => {
                         ownSocketId={ownSocketId}
                         playerWithTurnSocketId={playerWithTurn.socketId}
                         toggleShowInstructions={toggleShowInstructions}
+                        newCard={newCard}
                     />
                 </>
             )}
