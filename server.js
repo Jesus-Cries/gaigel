@@ -552,10 +552,6 @@ function endRound(currentGame, winnerIndex) {
     }
 
     console.log(winningPlayer.username + " won");
-    io.in(currentGame.lobbycode).emit("setInfoType", {
-        type: "somebodyWonTheStich",
-        detail: winningPlayer.username,
-    });
 
     // Create new-order
     let winner = winningPlayer;
@@ -587,8 +583,6 @@ function endRound(currentGame, winnerIndex) {
             checkCanSteal(player, currentGame);
         });
         io.in(currentGame.lobbycode).emit("setTalon", currentGame.talon);
-
-        io.in(currentGame.lobbycode).emit("setInfoType", { type: "newCards", detail: "" });
     }, 4000);
 }
 
