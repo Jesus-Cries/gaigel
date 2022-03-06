@@ -352,8 +352,6 @@ function startGame(currentGame) {
         socketId: "",
     });
 
-    currentGame.players[0].vorhand = true;
-
     currentGame.talon = createTalon();
     io.in(lobbycode).emit("setTalon", currentGame.talon);
 
@@ -368,6 +366,7 @@ function startGame(currentGame) {
         player.stiche = 0;
         player.playedCard = {};
         player.cards = [];
+        player.vorhand = false;
         player.melden = false;
         player.socket.emit("setScore", player.score);
         drawCard(lobbycode, 5, player);
@@ -375,6 +374,8 @@ function startGame(currentGame) {
         checkCanCall(player);
         checkCanSteal(player, currentGame);
     });
+
+    currentGame.players[0].vorhand = true;
 
     io.in(lobbycode).emit("setTalon", currentGame.talon);
 
@@ -648,16 +649,15 @@ function processAndereAlteHat(socket, data, player, currentGame) {
         if (
             currentGame.playedCards.filter(
                 (card) => card.value === "A" && card.type === currentGame.playedCards[0].type
-            ).length !== 1
+            ).length > 1
         ) {
             // If somebody else played the same ace
-            winnerIndex = currentGame.players
-                .slice(1)
-                .findIndex(
-                    (player) =>
-                        player.playedCard.type == currentGame.playedCards[0].type &&
-                        player.playedCard.value == currentGame.playedCards[0].value
-                );
+            winnerIndex = currentGame.players.findIndex(
+                (player) =>
+                    player.playedCard.type == currentGame.playedCards[0].type &&
+                    player.playedCard.value == currentGame.playedCards[0].value &&
+                    player !== currentGame.players[0]
+            );
         }
         endRound(currentGame, winnerIndex);
     }
@@ -694,8 +694,8 @@ function processHöherHat(socket, data, player, currentGame) {
         let notBeginnerPlayers = currentGame.players.filter((player) => player.vorhand === false);
         let playerWithHighestPoints = beginnerPlayer;
 
-        console.log(`Length of beginnerPlayer: ${beginnerPlayer.length}`);
         console.log(`Length of notBeginnerPlayers: ${notBeginnerPlayers.length}`);
+        console.log(currentGame.players);
 
         notBeginnerPlayers.forEach((player) => {
             if (
@@ -706,11 +706,8 @@ function processHöherHat(socket, data, player, currentGame) {
                 playerWithHighestPoints = player;
             }
         });
-        if (playerWithHighestPoints != beginnerPlayer) {
-            winnerIndex = currentGame.players.findIndex(
-                (player) => player === playerWithHighestPoints
-            );
-        }
+        winnerIndex = currentGame.players.findIndex((player) => player === playerWithHighestPoints);
+
         endRound(currentGame, winnerIndex);
         currentGame.opening = "";
     }
@@ -825,11 +822,12 @@ function processMelden(socket, data, player, currentGame) {
 
 // Function that creates the Talon from scratch
 function createTalon() {
-    let types = ["Eichel", "Blatt", "Herz", "Schellen"];
-    // let types = ["Eichel", "Blatt"];
+    //let types = ["Eichel", "Blatt", "Herz", "Schellen"];
+    let types = ["Eichel", "Blatt"];
     //let types = ["Eichel"];
     let values = ["7", "U", "O", "K", "10", "A"];
     // let values = ["K", "10", "A"];
+    //let values = ["K", "A"];
     let newTalon = [];
 
     types.forEach((type) =>

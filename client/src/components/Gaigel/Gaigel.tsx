@@ -313,7 +313,7 @@ const Gaigel: React.FC<Props> = () => {
 
         let hasNonTrumpNonAceCard =
             yourCards.filter((card) => trumpCard.type !== card.type && card.value !== "A").length >
-            1;
+            0;
 
         setCanPlayHöherHat(hasNonTrumpNonAceCard);
     }, [yourCards]);
