@@ -134,6 +134,7 @@ io.on("connection", (socket) => {
         console.log(data);
         io.to(socket.id).emit("setOpening", false);
         io.to(currentGame.lobbycode).emit("setCurrentOpening", data);
+        io.to(currentGame.lobbycode).emit("setOpeningName", data);
         // Set GameOpening
     });
 
@@ -241,6 +242,7 @@ function endGame(currentGame, winnerIndex) {
         io.in(currentGame.lobbycode).emit("setEndInformation", endInformation);
         io.in(currentGame.lobbycode).emit("setShowEndPopup", true);
         currentGame.waitingForNextRound = true;
+        io.to(currentGame.lobbycode).emit("setOpeningName", "");
     }, 5000);
 
     setTimeout(() => {
