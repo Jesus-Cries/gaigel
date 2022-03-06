@@ -7,7 +7,51 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             display: "flex",
             justifyContent: "space-between",
+            alignContent: "center",
+            alignItems: "center",
             gap: "40px",
+        },
+        callButton: {
+            zIndex: 10,
+        },
+        callButtonContainer: {
+            padding: 4,
+            position: "relative",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: "4px",
+        },
+        announcingAnimation: {
+            "&::before": {
+                // zIndex: 30,
+                content: "''",
+                position: "absolute",
+                width: "calc(100% - 15px)",
+                height: "calc(100% - 15px)",
+                background: "radial-gradient(#ffffff,#ff9100)",
+                animation: `$pulsate 1500ms infinite`,
+                borderRadius: "4px",
+            },
+            "&::after": {
+                content: "''",
+                position: "absolute",
+                background: "white",
+                inset: "4px",
+                borderRadius: "4px",
+            },
+        },
+        "@keyframes pulsate": {
+            "0%": {
+                width: "calc(100% - 15px)",
+                height: "calc(100% - 15px)",
+                opacity: 2,
+            },
+            "100%": {
+                width: "calc(100% + 4px)",
+                height: "calc(100% + 4px)",
+                opacity: 0,
+            },
         },
     })
 );
@@ -28,16 +72,25 @@ const Actions: React.FC<Props> = ({ canCall, announcing, melden, canSteal, raube
     return (
         <Box className={classes.root}>
             {canCall && (
-                <Button
-                    variant="contained"
-                    size={matches ? "medium" : "small"}
-                    style={{
-                        background: announcing === false ? "#e0e0e0" : "#ffdd1f",
-                    }}
-                    onClick={melden}
+                <Box
+                    className={
+                        announcing
+                            ? `${classes.callButtonContainer} ${classes.announcingAnimation}`
+                            : `${classes.callButtonContainer}`
+                    }
                 >
-                    Melden
-                </Button>
+                    <Button
+                        variant="contained"
+                        size={matches ? "medium" : "small"}
+                        className={classes.callButton}
+                        style={{
+                            background: announcing === false ? "#e0e0e0" : "#ffdd1f",
+                        }}
+                        onClick={melden}
+                    >
+                        Melden
+                    </Button>
+                </Box>
             )}
 
             {canSteal && (

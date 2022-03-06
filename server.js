@@ -32,7 +32,6 @@ pointsMap.set("O", 3);
 pointsMap.set("K", 4);
 pointsMap.set("10", 10);
 pointsMap.set("A", 11);
-let i = 0;
 
 io.on("connection", (socket) => {
     players.push(new classes.Player(socket));
@@ -238,9 +237,11 @@ function endGame(currentGame, winnerIndex) {
 
     console.log(endInformation);
 
-    io.in(currentGame.lobbycode).emit("setEndInformation", endInformation);
-    io.in(currentGame.lobbycode).emit("setShowEndPopup", true);
-    currentGame.waitingForNextRound = true;
+    setTimeout(() => {
+        io.in(currentGame.lobbycode).emit("setEndInformation", endInformation);
+        io.in(currentGame.lobbycode).emit("setShowEndPopup", true);
+        currentGame.waitingForNextRound = true;
+    }, 5000);
 
     setTimeout(() => {
         if (currentGame.waitingForNextRound) {
@@ -345,6 +346,11 @@ function startGame(currentGame) {
         socketId: currentGame.order[0].socket.id,
     };
     io.in(currentGame.lobbycode).emit("setPlayerWithTurn", playerWithTurn);
+    io.in(currentGame.lobbycode).emit("setHighlightedCardIndex", -1);
+    io.in(currentGame.lobbycode).emit("setHighlightedPlayer", {
+        username: "",
+        socketId: "",
+    });
 
     currentGame.players[0].vorhand = true;
 
@@ -457,6 +463,14 @@ function declinePlayedCard(socket, player, currentGame) {
 
 // Function that is called everytime a played card is accepted
 function acceptPlayedCard(socket, player, currentGame, data) {
+    if (currentGame.playedCards.length === 0) {
+        io.in(currentGame.lobbycode).emit("setHighlightedCardIndex", -1);
+        io.in(currentGame.lobbycode).emit("setHighlightedPlayer", {
+            username: "",
+            socketId: "",
+        });
+    }
+
     player.playedCard = data;
     let cardIndex = player.cards.findIndex(
         (element) => element.type === data.type && element.value === data.value
@@ -481,6 +495,14 @@ function acceptPlayedCard(socket, player, currentGame, data) {
 // Function that is called at the end of every round
 function endRound(currentGame, winnerIndex) {
     let winningPlayer = currentGame.players[winnerIndex];
+
+    // Share information about the player and card who the Stich for highlighting
+    io.in(currentGame.lobbycode).emit("setHighlightedCardIndex", winnerIndex);
+    io.in(currentGame.lobbycode).emit("setHighlightedPlayer", {
+        username: winningPlayer.username,
+        socketId: winningPlayer.socket.id,
+    });
+
     if (winningPlayer.vorhand === true && currentGame.opening === "AufDissle") {
         io.in(currentGame.lobbycode).emit("lostAufDissle", winningPlayer.username);
         let winner = currentGame.players[0];
@@ -517,7 +539,7 @@ function endRound(currentGame, winnerIndex) {
         player.socket.emit("setScore", player.score);
     });
 
-    if (winningPlayer.score >= 21) {
+    if (winningPlayer.score >= 41) {
         endGame(currentGame, winnerIndex);
         return;
     } else if (winningPlayer.cards.length === 0 && currentGame.talon.length === 0) {
@@ -545,14 +567,20 @@ function endRound(currentGame, winnerIndex) {
     let orderInfo = currentGame.order.map((player) => {
         return { username: player.username, socketId: player.socket.id };
     });
-    io.in(currentGame.lobbycode).emit("setOrder", orderInfo);
+
     let playerWithTurn = {
         username: currentGame.order[0].username,
         socketId: currentGame.order[0].socket.id,
     };
-    io.in(currentGame.lobbycode).emit("setPlayerWithTurn", playerWithTurn);
+
+    io.in(currentGame.lobbycode).emit("setPlayerWithTurn", {
+        username: "",
+        socketId: "",
+    });
 
     setTimeout(() => {
+        io.in(currentGame.lobbycode).emit("setOrder", orderInfo);
+        io.in(currentGame.lobbycode).emit("setPlayerWithTurn", playerWithTurn);
         currentGame.players.forEach((player) => {
             drawCard(currentGame.lobbycode, 1, player);
             io.to(player.socket.id).emit("setYourCards", player.cards);
@@ -562,9 +590,10 @@ function endRound(currentGame, winnerIndex) {
         io.in(currentGame.lobbycode).emit("setTalon", currentGame.talon);
 
         io.in(currentGame.lobbycode).emit("setInfoType", { type: "newCards", detail: "" });
-    }, 1000);
+    }, 4000);
 }
 
+// Function that checks if a player can use the utility "Rauben"
 function checkCanSteal(player, currentGame) {
     if (
         player.cards.filter(
@@ -661,9 +690,12 @@ function processHöherHat(socket, data, player, currentGame) {
 
     if (currentGame.order.length === 0) {
         let winnerIndex = 0;
-        let beginnerPlayer = currentGame.players.find((player) => player.vorhand == true);
-        let notBeginnerPlayers = currentGame.players.filter((player) => player.vorhand == false);
+        let beginnerPlayer = currentGame.players.find((player) => player.vorhand === true);
+        let notBeginnerPlayers = currentGame.players.filter((player) => player.vorhand === false);
         let playerWithHighestPoints = beginnerPlayer;
+
+        console.log(`Length of beginnerPlayer: ${beginnerPlayer.length}`);
+        console.log(`Length of notBeginnerPlayers: ${notBeginnerPlayers.length}`);
 
         notBeginnerPlayers.forEach((player) => {
             if (
@@ -778,7 +810,7 @@ function processMelden(socket, data, player, currentGame) {
             player.score += 20;
         }
 
-        if (player.score >= 21) {
+        if (player.score >= 41) {
             let winnerIndex = currentGame.players.findIndex(
                 (element) => element.socket.id === player.socket.id
             );
@@ -797,6 +829,7 @@ function createTalon() {
     // let types = ["Eichel", "Blatt"];
     // let types = ["Eichel"];
     let values = ["7", "U", "O", "K", "10", "A"];
+    // let values = ["K", "10", "A"];
     let newTalon = [];
 
     types.forEach((type) =>

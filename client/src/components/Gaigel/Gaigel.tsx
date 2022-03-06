@@ -117,10 +117,6 @@ const Gaigel: React.FC<Props> = () => {
 
     const [opening, setOpening] = useState<boolean>(false);
 
-    const [canPlayAndereAlte, setCanPlayAndereAlte] = useState<boolean>(true);
-    const [canPlayGeElfen, setCanPlayGeElfen] = useState<boolean>(true);
-    const [canPlayHöherHat, setCanPlayHöherHat] = useState<boolean>(true);
-
     const [currentOpening, setCurrentOpening] = useState<string>("");
 
     const [socket, setSocket] = useState(null);
@@ -138,6 +134,15 @@ const Gaigel: React.FC<Props> = () => {
     const [endInformation, setEndInformation] = useState<EndPlayerInformation[]>([
         { username: "", score: 0, wins: 0 },
     ]);
+
+    // Determines which card should be highlighted
+    // If no card should be highlighted set the value to -1
+    const [highlightedCardIndex, setHighlightedCardIndex] = useState<number>(-1);
+
+    const [highlightedPlayer, setHighlightedPlayer] = useState<PlayerProps>({
+        username: "",
+        socketId: "",
+    });
 
     // The cards that can still be drawn from the talon
     const [talonCards, setTalonCards] = useState<CardProps[]>(
@@ -292,24 +297,6 @@ const Gaigel: React.FC<Props> = () => {
         setSocket(socket);
     }, []);
 
-    useEffect(() => {
-        if (!Opening) return;
-
-        let playerHasAce: boolean = yourCards.filter((card) => card.value === "A").length > 0;
-        console.log(playerHasAce);
-        console.log(yourCards);
-        console.log(yourCards.filter((card) => card.value === "A"));
-
-        setCanPlayAndereAlte(playerHasAce);
-        setCanPlayGeElfen(playerHasAce);
-
-        let hasNonTrumpNonAceCard =
-            yourCards.filter((card) => trumpCard.type !== card.type && card.value !== "A").length >
-            1;
-
-        setCanPlayHöherHat(hasNonTrumpNonAceCard);
-    }, [yourCards]);
-
     // @ts-ignore
     useEffect(() => {
         let domain = "https://gaigel-web.herokuapp.com/";
@@ -405,8 +392,12 @@ const Gaigel: React.FC<Props> = () => {
             setLosingPlayer(data);
         });
 
-        newSocket.on("resetLostAufDissle", () => {
-            setLostAufDissle(false);
+        newSocket.on("setHighlightedCardIndex", (data: number) => {
+            setHighlightedCardIndex(data);
+        });
+
+        newSocket.on("setHighlightedPlayer", (data: PlayerProps) => {
+            setHighlightedPlayer(data);
         });
 
         return () => newSocket.close();
@@ -442,7 +433,11 @@ const Gaigel: React.FC<Props> = () => {
                         lobbycode={lobbyInformation.lobbycode}
                         score={score}
                     />
-                    <PlayerList order={order} playerWithTurn={playerWithTurn} />
+                    <PlayerList
+                        order={order}
+                        playerWithTurn={playerWithTurn}
+                        highlightedPlayer={highlightedPlayer}
+                    />
                     <hr style={{ width: "100%" }} />
                     <Box className={classes.talonAndTrump}>
                         <Talon cardsLeft={talonCards.length} drawCard={drawCard} />
@@ -453,6 +448,7 @@ const Gaigel: React.FC<Props> = () => {
                         playedCards={playedCards}
                         playerCount={lobbyInformation.playerInformation.length}
                         opening={currentOpening}
+                        highlightedCardIndex={highlightedCardIndex}
                     />
 
                     <hr style={{ width: "100%" }} />
@@ -483,11 +479,8 @@ const Gaigel: React.FC<Props> = () => {
                     {opening && (
                         <Opening
                             AndereAlteHat={AndereAlteHat}
-                            canPlayAndereAlte={canPlayAndereAlte}
                             GeElfen={GeElfen}
-                            canPlayGeElfen={canPlayGeElfen}
                             HöherHat={HöherHat}
-                            canPlayHöherHat={canPlayHöherHat}
                             AufDissle={AufDissle}
                             handleClick={onClickOpening}
                             hover={clickedOpening}
