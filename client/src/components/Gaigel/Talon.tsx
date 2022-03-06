@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: "center",
             alignItems: "center",
             border: "none",
-            // boxShadow: "none",
         },
         counter: {
             fontWeight: "lighter",
