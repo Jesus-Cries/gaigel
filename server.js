@@ -526,6 +526,12 @@ function endRound(currentGame, winnerIndex) {
                 }
             });
         }
+        currentGame.players.forEach(function (player) {
+            if (player !== winningPlayer) {
+                player.wins++;
+            }
+        });
+        winner.wins--;
         let winnerIndex = currentGame.players.findIndex((player) => player === winner);
         endGame(currentGame, winnerIndex);
     }
