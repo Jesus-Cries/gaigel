@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
             fontWeight: "lighter",
         },
         cardContainer: {
-            padding: 5,
+            padding: 7,
             position: "relative",
             display: "flex",
             justifyContent: "center",
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 position: "absolute",
                 width: "calc(100% - 15px)",
                 height: "calc(100% - 15px)",
-                background: "radial-gradient(#ffffff,#ff9100)",
+                background: "radial-gradient(#ffffff,#265802)",
                 animation: `$pulsate 1500ms infinite`,
                 borderRadius: "4px",
             },

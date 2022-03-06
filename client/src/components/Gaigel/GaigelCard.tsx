@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 position: "absolute",
                 width: "calc(100% - 15px)",
                 height: "calc(100% - 15px)",
-                background: "radial-gradient(#ffffff,#ff9100)",
+                background: "radial-gradient(#ffffff,#265802)",
                 animation: `$pulsate 1500ms 3`,
                 borderRadius: "4px",
             },
@@ -127,7 +127,7 @@ const GaigelCard: React.FC<Props> = ({
                 style={{
                     pointerEvents: clickable ? "auto" : "none",
                     border:
-                        keepHighlighting && highlighted ? "1px solid #ff9100" : "1px solid #ddd",
+                        keepHighlighting && highlighted ? "1px solid #265802" : "1px solid #ddd",
                 }}
             >
                 {hidden && value !== "" ? (

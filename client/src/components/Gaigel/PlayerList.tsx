@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 position: "absolute",
                 width: "calc(100% - 15px)",
                 height: "calc(100% - 15px)",
-                background: "radial-gradient(#ffffff,#ff9100)",
+                background: "radial-gradient(#ffffff,#265802)",
                 animation: `$pulsate 1500ms 3`,
                 borderRadius: "4px",
             },
@@ -98,9 +98,9 @@ const PlayerList: React.FC<Props> = ({ order, playerWithTurn, highlightedPlayer 
                             className={classes.name}
                             style={{
                                 border: highlighted
-                                    ? "2px solid #ff9100"
+                                    ? "2px solid #265802"
                                     : turn
-                                    ? "2px solid #ffe600"
+                                    ? "2px solid #265802"
                                     : "none",
                             }}
                             key={index}

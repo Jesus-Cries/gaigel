@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 position: "absolute",
                 width: "calc(100% - 15px)",
                 height: "calc(100% - 15px)",
-                background: "radial-gradient(#ffffff,#ff9100)",
+                background: "radial-gradient(#ffffff,#265802)",
                 animation: `$pulsate 1500ms infinite`,
                 borderRadius: "4px",
             },
@@ -84,7 +84,7 @@ const Actions: React.FC<Props> = ({ canCall, announcing, melden, canSteal, raube
                         size={matches ? "medium" : "small"}
                         className={classes.callButton}
                         style={{
-                            background: announcing === false ? "#e0e0e0" : "#ffdd1f",
+                            background: announcing === false ? "#e0e0e0" : "#b9d4a8",
                         }}
                         onClick={melden}
                     >
