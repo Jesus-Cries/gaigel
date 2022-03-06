@@ -63,7 +63,7 @@ interface Props {
 const Instructions: React.FC<Props> = ({ toggleShowInstructions }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     const [currentPage, setCurrentPage] = useState<number>(0);
 

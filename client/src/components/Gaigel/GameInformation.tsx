@@ -30,7 +30,7 @@ interface Props {
 const GameInformation: React.FC<Props> = ({ username, lobbycode, score }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     return (
         <Box className={classes.root}>

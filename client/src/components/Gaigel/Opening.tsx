@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         button: {
             fontSize: 10,
-            [theme.breakpoints.up("md")]: {
+            [theme.breakpoints.up("lg")]: {
                 fontSize: 14,
             },
         },
@@ -71,7 +71,7 @@ const Opening: React.FC<Props> = ({
 }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     const handleAndereAlteHat = () => {
         AndereAlteHat();

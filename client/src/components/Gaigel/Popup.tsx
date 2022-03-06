@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: "center",
             alignContent: "center",
             alignItems: "center",
-            [theme.breakpoints.up("md")]: {
+            [theme.breakpoints.up("lg")]: {
                 fontSize: "16px",
             },
         },
@@ -28,7 +28,7 @@ interface Props {
 const Popup: React.FC<Props> = ({ snackbarType, type, detail, reset }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     let message = "";
 

@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
             flexDirection: "column",
             justifyContent: "center",
             gap: "10px",
-            [theme.breakpoints.up("md")]: {
+            [theme.breakpoints.up("lg")]: {
                 gap: "15px",
             },
         },
@@ -77,7 +77,7 @@ const LobbyPage: React.FC<Props> = ({
 }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     const [ready, setReady] = useState<boolean>(false);
 

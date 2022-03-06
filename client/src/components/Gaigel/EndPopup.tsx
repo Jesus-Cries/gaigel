@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         logo: {
             width: "50px",
-            [theme.breakpoints.up("md")]: {
+            [theme.breakpoints.up("lg")]: {
                 width: "70px",
             },
         },
@@ -85,7 +85,7 @@ interface Props {
 const EndPopup: React.FC<Props> = ({ endInformation, backToLobby, aufDissle, losingPlayer }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     const [showRanking, setShowRanking] = useState<boolean>(false);
     const [counter, setCounter] = useState<number>(20);

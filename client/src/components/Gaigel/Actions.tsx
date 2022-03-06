@@ -67,7 +67,7 @@ interface Props {
 const Actions: React.FC<Props> = ({ canCall, announcing, melden, canSteal, rauben }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     return (
         <Box className={classes.root}>

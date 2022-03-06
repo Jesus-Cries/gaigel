@@ -34,7 +34,7 @@ interface Props {
 const TrumpCard: React.FC<Props> = ({ trumpCard, openingName }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     let emptyChar: string = "⠀";
 

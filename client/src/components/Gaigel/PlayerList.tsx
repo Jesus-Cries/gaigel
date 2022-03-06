@@ -78,7 +78,7 @@ interface Props {
 const PlayerList: React.FC<Props> = ({ order, playerWithTurn, highlightedPlayer }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     return (
         <Box className={classes.root}>

@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) =>
             zIndex: 10,
             width: 44,
             height: 64,
-            [theme.breakpoints.up("md")]: {
+            [theme.breakpoints.up("lg")]: {
                 width: 54,
                 height: 79,
             },
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme: Theme) =>
         card: {
             zIndex: 20,
             height: "100%",
-            [theme.breakpoints.up("md")]: {
+            [theme.breakpoints.up("lg")]: {
                 height: "95%",
             },
             width: "100%",
@@ -106,7 +106,7 @@ const GaigelCard: React.FC<Props> = ({
 }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     const symbolMap: Hash = {};
     const iconSize = matches ? 13 : 10;
