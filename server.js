@@ -134,6 +134,7 @@ io.on("connection", (socket) => {
         console.log(data);
         io.to(socket.id).emit("setOpening", false);
         io.to(currentGame.lobbycode).emit("setCurrentOpening", data);
+        io.to(currentGame.lobbycode).emit("setOpeningName", data);
         // Set GameOpening
     });
 
@@ -241,6 +242,7 @@ function endGame(currentGame, winnerIndex) {
         io.in(currentGame.lobbycode).emit("setEndInformation", endInformation);
         io.in(currentGame.lobbycode).emit("setShowEndPopup", true);
         currentGame.waitingForNextRound = true;
+        io.to(currentGame.lobbycode).emit("setOpeningName", "");
     }, 5000);
 
     setTimeout(() => {
@@ -560,10 +562,6 @@ function endRound(currentGame, winnerIndex) {
     }
 
     console.log(winningPlayer.username + " won");
-    io.in(currentGame.lobbycode).emit("setInfoType", {
-        type: "somebodyWonTheStich",
-        detail: winningPlayer.username,
-    });
 
     // Create new-order
     let winner = winningPlayer;
@@ -595,8 +593,6 @@ function endRound(currentGame, winnerIndex) {
             checkCanSteal(player, currentGame);
         });
         io.in(currentGame.lobbycode).emit("setTalon", currentGame.talon);
-
-        io.in(currentGame.lobbycode).emit("setInfoType", { type: "newCards", detail: "" });
     }, 4000);
 }
 

@@ -115,9 +115,16 @@ const Gaigel: React.FC<Props> = () => {
         socketId: "",
     });
 
+    // Toggle for showing opinion options
     const [opening, setOpening] = useState<boolean>(false);
 
+    // Saves the code for the chosen opening (e.g. "HöherHat", "AufDissle")
+    // Is cleared after the first Stich
     const [currentOpening, setCurrentOpening] = useState<string>("");
+
+    // Saves the real name of the chosen opening (e.g. "Höher hat", "Auf Dissle")
+    // Is cleared after a game has been won
+    const [openingName, setOpeningName] = useState<string>("");
 
     const [socket, setSocket] = useState(null);
 
@@ -392,6 +399,10 @@ const Gaigel: React.FC<Props> = () => {
             setCurrentOpening(data);
         });
 
+        newSocket.on("setOpeningName", (data: string) => {
+            setOpeningName(data);
+        });
+
         newSocket.on("canCall", (data: boolean) => {
             setCanCall(data);
         });
@@ -466,7 +477,7 @@ const Gaigel: React.FC<Props> = () => {
                     <hr style={{ width: "100%" }} />
                     <Box className={classes.talonAndTrump}>
                         <Talon cardsLeft={talonCards.length} drawCard={drawCard} />
-                        <TrumpCard trumpCard={trumpCard} />
+                        <TrumpCard trumpCard={trumpCard} openingName={openingName} />
                     </Box>
 
                     <PlayedCards
