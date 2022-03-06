@@ -88,6 +88,7 @@ interface Props {
     playCard?: (type: string, value: string) => void;
     hidden?: boolean;
     highlighted?: boolean;
+    keepHighlighting?: boolean;
 }
 
 interface Hash {
@@ -101,6 +102,7 @@ const GaigelCard: React.FC<Props> = ({
     playCard,
     hidden = false,
     highlighted = false,
+    keepHighlighting = true,
 }) => {
     const classes = useStyles();
     const theme = useTheme();
@@ -124,7 +126,8 @@ const GaigelCard: React.FC<Props> = ({
                 className={classes.cardActionArea}
                 style={{
                     pointerEvents: clickable ? "auto" : "none",
-                    border: highlighted ? "1px solid #ff9100" : "1px solid #ddd",
+                    border:
+                        keepHighlighting && highlighted ? "1px solid #ff9100" : "1px solid #ddd",
                 }}
             >
                 {hidden && value !== "" ? (

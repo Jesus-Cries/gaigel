@@ -48,8 +48,11 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface Props {
     GeElfen: () => void;
+    canPlayGeElfen: boolean;
     AndereAlteHat: () => void;
+    canPlayAndereAlte: boolean;
     HöherHat: () => void;
+    canPlayHöherHat: boolean;
     AufDissle: () => void;
     handleClick: () => void;
     hover: boolean;
@@ -62,6 +65,9 @@ const Opening: React.FC<Props> = ({
     AufDissle,
     handleClick,
     hover,
+    canPlayAndereAlte,
+    canPlayGeElfen,
+    canPlayHöherHat,
 }) => {
     const classes = useStyles();
     const theme = useTheme();
@@ -101,6 +107,7 @@ const Opening: React.FC<Props> = ({
                     variant="contained"
                     size={matches ? "medium" : "small"}
                     onClick={handleAndereAlteHat}
+                    disabled={!canPlayAndereAlte ? true : false}
                 >
                     Andere Alte
                 </Button>
@@ -109,6 +116,7 @@ const Opening: React.FC<Props> = ({
                     variant="contained"
                     size={matches ? "medium" : "small"}
                     onClick={handleGeElfen}
+                    disabled={!canPlayGeElfen ? true : false}
                 >
                     Ge-Elfen
                 </Button>
@@ -118,6 +126,7 @@ const Opening: React.FC<Props> = ({
                     variant="contained"
                     size={matches ? "medium" : "small"}
                     onClick={handleHöherHat}
+                    disabled={!canPlayHöherHat ? true : false}
                 >
                     Höher hat
                 </Button>
