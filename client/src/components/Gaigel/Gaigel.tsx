@@ -533,6 +533,7 @@ const Gaigel: React.FC<Props> = () => {
                         playerWithTurnSocketId={playerWithTurn.socketId}
                         toggleShowInstructions={toggleShowInstructions}
                         newCard={newCard}
+                        showEndPopup={showEndPopup}
                     />
                 </>
             )}

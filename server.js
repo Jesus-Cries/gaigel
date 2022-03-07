@@ -252,7 +252,7 @@ function endGame(currentGame, winnerIndex) {
             currentGame.waitingForNextRound = false;
             io.in(currentGame.lobbycode).emit("resetLostAufDissle");
         }
-    }, 20000);
+    }, 25000);
 }
 
 // Function for closing a game in case a player disconnects
@@ -697,7 +697,6 @@ function processHöherHat(socket, data, player, currentGame) {
         let playerWithHighestPoints = beginnerPlayer;
 
         console.log(`Length of notBeginnerPlayers: ${notBeginnerPlayers.length}`);
-        console.log(currentGame.players);
 
         notBeginnerPlayers.forEach((player) => {
             if (

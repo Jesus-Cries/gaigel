@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         turnAnimation: {
             "&::before": {
-                // zIndex: 50,
                 content: "''",
                 position: "absolute",
                 width: "calc(100% - 15px)",
@@ -81,6 +80,7 @@ interface Props {
     playerWithTurnSocketId: string;
     toggleShowInstructions: () => void;
     newCard: CardProps;
+    showEndPopup: boolean;
 }
 
 const YourCards: React.FC<Props> = ({
@@ -90,6 +90,7 @@ const YourCards: React.FC<Props> = ({
     playerWithTurnSocketId,
     toggleShowInstructions,
     newCard,
+    showEndPopup,
 }) => {
     const classes = useStyles();
     const theme = useTheme();
@@ -125,7 +126,7 @@ const YourCards: React.FC<Props> = ({
 
                 <Box
                     className={
-                        ownSocketId === playerWithTurnSocketId
+                        ownSocketId === playerWithTurnSocketId && !showEndPopup
                             ? `${classes.cardContainer} ${classes.turnAnimation}`
                             : `${classes.cardContainer}`
                     }
