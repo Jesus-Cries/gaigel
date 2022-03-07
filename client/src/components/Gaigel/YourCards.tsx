@@ -101,6 +101,19 @@ const YourCards: React.FC<Props> = ({
         filledUserCards.splice(filledUserCards.length, 0, { type: "", value: "" });
     }
 
+    let indexOfNewCard: number = -1;
+
+    filledUserCards.forEach((card, index) => {
+        if (
+            card.type === newCard.type &&
+            card.value === newCard.value &&
+            newCard.value !== "" &&
+            userCards.length === 5
+        ) {
+            indexOfNewCard = index;
+        }
+    });
+
     return (
         <Box className={classes.root}>
             <Typography variant={matches ? "h6" : "body1"} className={classes.header}>
@@ -119,12 +132,8 @@ const YourCards: React.FC<Props> = ({
                     style={ownSocketId === playerWithTurnSocketId ? {} : {}}
                 >
                     {filledUserCards.map((card, index) => {
-                        let currentClickable = card.type === "" ? false : true;
-                        let highlightedCard =
-                            card.type === newCard.type &&
-                            card.value === newCard.value &&
-                            newCard.value !== "" &&
-                            userCards.length === 5;
+                        let currentClickable = card.type !== "";
+                        let highlightCard = index === indexOfNewCard;
 
                         return (
                             <GaigelCard
@@ -133,7 +142,7 @@ const YourCards: React.FC<Props> = ({
                                 clickable={currentClickable}
                                 playCard={playCard}
                                 key={index}
-                                highlighted={highlightedCard}
+                                highlighted={highlightCard}
                                 keepHighlighting={false}
                             />
                         );

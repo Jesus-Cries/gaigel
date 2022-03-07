@@ -824,12 +824,12 @@ function processMelden(socket, data, player, currentGame) {
 
 // Function that creates the Talon from scratch
 function createTalon() {
-    //let types = ["Eichel", "Blatt", "Herz", "Schellen"];
-    let types = ["Eichel", "Blatt"];
+    let types = ["Eichel", "Blatt", "Herz", "Schellen"];
+    // let types = ["Eichel", "Blatt"];
     //let types = ["Eichel"];
     let values = ["7", "U", "O", "K", "10", "A"];
     // let values = ["K", "10", "A"];
-    //let values = ["K", "A"];
+    // let values = ["A"];
     let newTalon = [];
 
     types.forEach((type) =>
