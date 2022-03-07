@@ -164,7 +164,7 @@ io.on("connection", (socket) => {
 
         io.in(currentGame.lobbycode).emit("setTrumpCard", currentGame.trumpCard);
         socket.emit("setYourCards", player.cards);
-        socket.emit("canSteal", false);
+        socket.emit("setCanSteal", false);
     });
 
     // This function contains the logic for when a player disconnects
@@ -237,6 +237,10 @@ function endGame(currentGame, winnerIndex) {
     });
 
     console.log(endInformation);
+    io.in(currentGame.lobbycode).emit("setPlayerWithTurn", {
+        username: "",
+        socketId: "",
+    });
 
     setTimeout(() => {
         io.in(currentGame.lobbycode).emit("setEndInformation", endInformation);
@@ -250,9 +254,10 @@ function endGame(currentGame, winnerIndex) {
             startGame(currentGame);
             io.in(currentGame.lobbycode).emit("setShowEndPopup", false);
             currentGame.waitingForNextRound = false;
-            io.in(currentGame.lobbycode).emit("resetLostAufDissle");
+            io.in(currentGame.lobbycode).emit("setLostAufDissle", false);
+            io.in(currentGame.lobbycode).emit("setLosingPlayer", "");
         }
-    }, 20000);
+    }, 25000);
 }
 
 // Function for closing a game in case a player disconnects
@@ -403,7 +408,7 @@ function shareLobbyInformation(lobbycode) {
         if (player.ready) amountReadyPlayers++;
     });
 
-    io.in(lobbycode).emit("lobbyInformation", {
+    io.in(lobbycode).emit("setLobbyInformation", {
         lobbycode: lobbycode,
         amountReadyPlayers: amountReadyPlayers,
         playerInformation: playerInformation,
@@ -507,7 +512,9 @@ function endRound(currentGame, winnerIndex) {
     });
 
     if (winningPlayer.vorhand === true && currentGame.opening === "AufDissle") {
-        io.in(currentGame.lobbycode).emit("lostAufDissle", winningPlayer.username);
+        console.log(`${winningPlayer.username} has lost aufDissle`);
+        io.in(currentGame.lobbycode).emit("setLostAufDissle", true);
+        io.in(currentGame.lobbycode).emit("setLosingPlayer", winningPlayer.username);
         let winner = currentGame.players[0];
         currentGame.players.forEach(function (player) {
             if (player.score > winner.score) {
@@ -548,7 +555,7 @@ function endRound(currentGame, winnerIndex) {
         player.socket.emit("setScore", player.score);
     });
 
-    if (winningPlayer.score >= 41) {
+    if (winningPlayer.score >= 21) {
         endGame(currentGame, winnerIndex);
         return;
     } else if (winningPlayer.cards.length === 0 && currentGame.talon.length === 0) {
@@ -606,9 +613,9 @@ function checkCanSteal(player, currentGame) {
         player.stiche > 0 &&
         currentGame.talon.length > 0
     ) {
-        io.to(player.socket.id).emit("canSteal", true);
+        io.to(player.socket.id).emit("setCanSteal", true);
     } else {
-        io.to(player.socket.id).emit("canSteal", false);
+        io.to(player.socket.id).emit("setCanSteal", false);
     }
 }
 
@@ -624,13 +631,13 @@ function checkCanCall(player) {
             sameType.filter((card) => card.value == "K").length > 0
         ) {
             if (player.stiche > 0) {
-                io.to(player.socket.id).emit("canCall", true);
+                io.to(player.socket.id).emit("setCanCall", true);
                 sendTrue = true;
             }
         }
     });
     if (sendTrue === false) {
-        io.to(player.socket.id).emit("canCall", false);
+        io.to(player.socket.id).emit("setCanCall", false);
     }
 }
 
@@ -695,9 +702,6 @@ function processHöherHat(socket, data, player, currentGame) {
         let beginnerPlayer = currentGame.players.find((player) => player.vorhand === true);
         let notBeginnerPlayers = currentGame.players.filter((player) => player.vorhand === false);
         let playerWithHighestPoints = beginnerPlayer;
-
-        console.log(`Length of notBeginnerPlayers: ${notBeginnerPlayers.length}`);
-        console.log(currentGame.players);
 
         notBeginnerPlayers.forEach((player) => {
             if (
@@ -809,7 +813,7 @@ function processMelden(socket, data, player, currentGame) {
             player.score += 20;
         }
 
-        if (player.score >= 41) {
+        if (player.score >= 21) {
             let winnerIndex = currentGame.players.findIndex(
                 (element) => element.socket.id === player.socket.id
             );
@@ -824,12 +828,12 @@ function processMelden(socket, data, player, currentGame) {
 
 // Function that creates the Talon from scratch
 function createTalon() {
-    //let types = ["Eichel", "Blatt", "Herz", "Schellen"];
-    let types = ["Eichel", "Blatt"];
+    let types = ["Eichel", "Blatt", "Herz", "Schellen"];
+    // let types = ["Eichel", "Blatt"];
     //let types = ["Eichel"];
     let values = ["7", "U", "O", "K", "10", "A"];
     // let values = ["K", "10", "A"];
-    //let values = ["K", "A"];
+    // let values = ["A"];
     let newTalon = [];
 
     types.forEach((type) =>
@@ -870,7 +874,7 @@ function drawCard(lobbycode, amount, player) {
         // Gets last cards of the talon array and removes them
         let drawnCards = currentGame.talon.slice(currentGame.talon.length - amount);
         if (amount === 1) {
-            player.socket.emit("newCard", drawnCards[0]);
+            player.socket.emit("setNewcard", drawnCards[0]);
         }
         currentGame.talon = currentGame.talon.slice(0, currentGame.talon.length - amount);
 

@@ -78,11 +78,16 @@ interface EndPlayerInformation {
 interface Props {
     endInformation: EndPlayerInformation[];
     backToLobby: () => void;
-    aufDissle: boolean;
+    lostAufDissle: boolean;
     losingPlayer?: string;
 }
 
-const EndPopup: React.FC<Props> = ({ endInformation, backToLobby, aufDissle, losingPlayer }) => {
+const EndPopup: React.FC<Props> = ({
+    endInformation,
+    backToLobby,
+    lostAufDissle,
+    losingPlayer,
+}) => {
     const classes = useStyles();
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.up("lg"));
@@ -123,7 +128,7 @@ const EndPopup: React.FC<Props> = ({ endInformation, backToLobby, aufDissle, los
     useEffect(() => {
         if (showRanking) setFinalSorting(sortedByWins);
         else setFinalSorting(sortedByScore);
-    }, [showRanking, sortedByScore, sortedByWins]);
+    }, [showRanking]);
 
     useEffect(() => {
         setCounter(20);
@@ -135,9 +140,9 @@ const EndPopup: React.FC<Props> = ({ endInformation, backToLobby, aufDissle, los
             <Box className={classes.header}>
                 <img src={"/crown.png"} className={classes.logo} alt="" />
                 <Typography align="center" variant={matches ? "h4" : "h5"}>
-                    {aufDissle
+                    {lostAufDissle
                         ? `${losingPlayer} hat auf Dissle verloren!`
-                        : `${endInformation[0].username} hat gewonnen!`}
+                        : `${sortedByScore[0].username} hat gewonnen!`}
                 </Typography>
             </Box>
 
@@ -157,7 +162,7 @@ const EndPopup: React.FC<Props> = ({ endInformation, backToLobby, aufDissle, los
 
             <Box className={classes.rankingContainer}>
                 {finalSorting.map((player, index) => (
-                    <Box className={classes.rankingElement}>
+                    <Box className={classes.rankingElement} key={index}>
                         <Typography
                             variant={matches ? "h6" : "body1"}
                             className={classes.rankingElementText}

@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         turnAnimation: {
             "&::before": {
-                // zIndex: 50,
                 content: "''",
                 position: "absolute",
                 width: "calc(100% - 15px)",
@@ -81,6 +80,7 @@ interface Props {
     playerWithTurnSocketId: string;
     toggleShowInstructions: () => void;
     newCard: CardProps;
+    showEndPopup: boolean;
 }
 
 const YourCards: React.FC<Props> = ({
@@ -90,6 +90,7 @@ const YourCards: React.FC<Props> = ({
     playerWithTurnSocketId,
     toggleShowInstructions,
     newCard,
+    showEndPopup,
 }) => {
     const classes = useStyles();
     const theme = useTheme();
@@ -100,6 +101,19 @@ const YourCards: React.FC<Props> = ({
     for (let q = filledUserCards.length; q < 5; q++) {
         filledUserCards.splice(filledUserCards.length, 0, { type: "", value: "" });
     }
+
+    let indexOfNewCard: number = -1;
+
+    filledUserCards.forEach((card, index) => {
+        if (
+            card.type === newCard.type &&
+            card.value === newCard.value &&
+            newCard.value !== "" &&
+            userCards.length === 5
+        ) {
+            indexOfNewCard = index;
+        }
+    });
 
     return (
         <Box className={classes.root}>
@@ -112,19 +126,15 @@ const YourCards: React.FC<Props> = ({
 
                 <Box
                     className={
-                        ownSocketId === playerWithTurnSocketId
+                        ownSocketId === playerWithTurnSocketId && !showEndPopup
                             ? `${classes.cardContainer} ${classes.turnAnimation}`
                             : `${classes.cardContainer}`
                     }
                     style={ownSocketId === playerWithTurnSocketId ? {} : {}}
                 >
                     {filledUserCards.map((card, index) => {
-                        let currentClickable = card.type === "" ? false : true;
-                        let highlightedCard =
-                            card.type === newCard.type &&
-                            card.value === newCard.value &&
-                            newCard.value !== "" &&
-                            userCards.length === 5;
+                        let currentClickable = card.type !== "";
+                        let highlightCard = index === indexOfNewCard;
 
                         return (
                             <GaigelCard
@@ -133,7 +143,7 @@ const YourCards: React.FC<Props> = ({
                                 clickable={currentClickable}
                                 playCard={playCard}
                                 key={index}
-                                highlighted={highlightedCard}
+                                highlighted={highlightCard}
                                 keepHighlighting={false}
                             />
                         );
