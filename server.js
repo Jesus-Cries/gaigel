@@ -512,8 +512,7 @@ function endRound(currentGame, winnerIndex) {
     });
 
     if (winningPlayer.vorhand === true && currentGame.opening === "AufDissle") {
-        console.log("It seems like somebody lost auf Dissle");
-        console.log(`Current opening: ${currentGame.opening}`);
+        console.log(`${winningPlayer.username} has lost aufDissle`);
         io.in(currentGame.lobbycode).emit("setLostAufDissle", true);
         io.in(currentGame.lobbycode).emit("setLosingPlayer", winningPlayer.username);
         let winner = currentGame.players[0];

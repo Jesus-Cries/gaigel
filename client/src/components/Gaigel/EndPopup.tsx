@@ -128,7 +128,7 @@ const EndPopup: React.FC<Props> = ({
     useEffect(() => {
         if (showRanking) setFinalSorting(sortedByWins);
         else setFinalSorting(sortedByScore);
-    }, [showRanking, sortedByScore, sortedByWins]);
+    }, [showRanking]);
 
     useEffect(() => {
         setCounter(20);
@@ -162,7 +162,7 @@ const EndPopup: React.FC<Props> = ({
 
             <Box className={classes.rankingContainer}>
                 {finalSorting.map((player, index) => (
-                    <Box className={classes.rankingElement}>
+                    <Box className={classes.rankingElement} key={index}>
                         <Typography
                             variant={matches ? "h6" : "body1"}
                             className={classes.rankingElementText}

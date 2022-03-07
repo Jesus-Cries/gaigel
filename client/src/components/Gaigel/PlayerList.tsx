@@ -92,6 +92,7 @@ const PlayerList: React.FC<Props> = ({ order, playerWithTurn, highlightedPlayer 
                                 ? `${classes.nameContainer} ${classes.winAnimation}`
                                 : `${classes.nameContainer}`
                         }
+                        key={index + 1}
                     >
                         <Typography
                             variant={matches ? "body1" : "body2"}

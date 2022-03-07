@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import { makeStyles, Theme, useTheme, createStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Grid from "@material-ui/core/Grid";
