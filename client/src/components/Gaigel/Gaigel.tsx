@@ -346,7 +346,7 @@ const Gaigel: React.FC<Props> = () => {
             setLoggedIn(data);
         });
 
-        newSocket.on("lobbyInformation", (data: LobbyInformation) => {
+        newSocket.on("setLobbyInformation", (data: LobbyInformation) => {
             setLobbyInformation(data);
         });
 
@@ -403,11 +403,11 @@ const Gaigel: React.FC<Props> = () => {
             setOpeningName(data);
         });
 
-        newSocket.on("canCall", (data: boolean) => {
+        newSocket.on("setCanCall", (data: boolean) => {
             setCanCall(data);
         });
 
-        newSocket.on("canSteal", (data: boolean) => {
+        newSocket.on("setCanSteal", (data: boolean) => {
             setCanSteal(data);
         });
 
@@ -419,7 +419,7 @@ const Gaigel: React.FC<Props> = () => {
             setEndInformation(data);
         });
 
-        newSocket.on("lostAufDissle", (data: string) => {
+        newSocket.on("setLostAufDissle", (data: string) => {
             setLostAufDissle(true);
             setLosingPlayer(data);
         });
@@ -432,7 +432,7 @@ const Gaigel: React.FC<Props> = () => {
             setHighlightedPlayer(data);
         });
 
-        newSocket.on("newCard", (data: CardProps) => {
+        newSocket.on("setNewcard", (data: CardProps) => {
             setNewcard(data);
         });
 

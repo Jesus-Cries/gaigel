@@ -164,7 +164,7 @@ io.on("connection", (socket) => {
 
         io.in(currentGame.lobbycode).emit("setTrumpCard", currentGame.trumpCard);
         socket.emit("setYourCards", player.cards);
-        socket.emit("canSteal", false);
+        socket.emit("setCanSteal", false);
     });
 
     // This function contains the logic for when a player disconnects
@@ -407,7 +407,7 @@ function shareLobbyInformation(lobbycode) {
         if (player.ready) amountReadyPlayers++;
     });
 
-    io.in(lobbycode).emit("lobbyInformation", {
+    io.in(lobbycode).emit("setLobbyInformation", {
         lobbycode: lobbycode,
         amountReadyPlayers: amountReadyPlayers,
         playerInformation: playerInformation,
@@ -511,7 +511,7 @@ function endRound(currentGame, winnerIndex) {
     });
 
     if (winningPlayer.vorhand === true && currentGame.opening === "AufDissle") {
-        io.in(currentGame.lobbycode).emit("lostAufDissle", winningPlayer.username);
+        io.in(currentGame.lobbycode).emit("setLostAufDissle", winningPlayer.username);
         let winner = currentGame.players[0];
         currentGame.players.forEach(function (player) {
             if (player.score > winner.score) {
@@ -610,9 +610,9 @@ function checkCanSteal(player, currentGame) {
         player.stiche > 0 &&
         currentGame.talon.length > 0
     ) {
-        io.to(player.socket.id).emit("canSteal", true);
+        io.to(player.socket.id).emit("setCanSteal", true);
     } else {
-        io.to(player.socket.id).emit("canSteal", false);
+        io.to(player.socket.id).emit("setCanSteal", false);
     }
 }
 
@@ -628,13 +628,13 @@ function checkCanCall(player) {
             sameType.filter((card) => card.value == "K").length > 0
         ) {
             if (player.stiche > 0) {
-                io.to(player.socket.id).emit("canCall", true);
+                io.to(player.socket.id).emit("setCanCall", true);
                 sendTrue = true;
             }
         }
     });
     if (sendTrue === false) {
-        io.to(player.socket.id).emit("canCall", false);
+        io.to(player.socket.id).emit("setCanCall", false);
     }
 }
 
@@ -873,7 +873,7 @@ function drawCard(lobbycode, amount, player) {
         // Gets last cards of the talon array and removes them
         let drawnCards = currentGame.talon.slice(currentGame.talon.length - amount);
         if (amount === 1) {
-            player.socket.emit("newCard", drawnCards[0]);
+            player.socket.emit("setNewcard", drawnCards[0]);
         }
         currentGame.talon = currentGame.talon.slice(0, currentGame.talon.length - amount);
 
