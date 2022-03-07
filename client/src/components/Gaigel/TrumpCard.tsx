@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { makeStyles, Theme, useTheme, createStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Grid from "@material-ui/core/Grid";
@@ -36,12 +37,28 @@ const TrumpCard: React.FC<Props> = ({ trumpCard, openingName }) => {
 
     let emptyChar: string = "⠀";
 
+    const [startHighlighting, setHighlight] = useState<boolean>(false);
+
+    // Forces a restart of the highlighting animation of GaigelCard
+    useEffect(() => {
+        setHighlight(false);
+        setTimeout(() => {
+            setHighlight(true);
+        }, 100);
+    }, [trumpCard]);
+
     return (
         <Grid className={classes.root}>
             <Typography variant={matches ? "h6" : "body1"} className={classes.lightFontWeigth}>
                 Trumpf
             </Typography>
-            <GaigelCard type={trumpCard.type} value={trumpCard.value} clickable={false} />
+            <GaigelCard
+                type={trumpCard.type}
+                value={trumpCard.value}
+                clickable={false}
+                highlighted={startHighlighting}
+                keepHighlighting={false}
+            />
             <Typography
                 variant={matches ? "body1" : "subtitle2"}
                 className={classes.lightFontWeigth}
