@@ -142,7 +142,7 @@ const EndPopup: React.FC<Props> = ({
                 <Typography align="center" variant={matches ? "h4" : "h5"}>
                     {lostAufDissle
                         ? `${losingPlayer} hat auf Dissle verloren!`
-                        : `${endInformation[0].username} hat gewonnen!`}
+                        : `${sortedByScore[0].username} hat gewonnen!`}
                 </Typography>
             </Box>
 
