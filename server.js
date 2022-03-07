@@ -237,6 +237,10 @@ function endGame(currentGame, winnerIndex) {
     });
 
     console.log(endInformation);
+    io.in(currentGame.lobbycode).emit("setPlayerWithTurn", {
+        username: "",
+        socketId: "",
+    });
 
     setTimeout(() => {
         io.in(currentGame.lobbycode).emit("setEndInformation", endInformation);
@@ -548,7 +552,7 @@ function endRound(currentGame, winnerIndex) {
         player.socket.emit("setScore", player.score);
     });
 
-    if (winningPlayer.score >= 41) {
+    if (winningPlayer.score >= 21) {
         endGame(currentGame, winnerIndex);
         return;
     } else if (winningPlayer.cards.length === 0 && currentGame.talon.length === 0) {
@@ -808,7 +812,7 @@ function processMelden(socket, data, player, currentGame) {
             player.score += 20;
         }
 
-        if (player.score >= 41) {
+        if (player.score >= 21) {
             let winnerIndex = currentGame.players.findIndex(
                 (element) => element.socket.id === player.socket.id
             );

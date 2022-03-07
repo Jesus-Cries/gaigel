@@ -97,11 +97,7 @@ const PlayerList: React.FC<Props> = ({ order, playerWithTurn, highlightedPlayer 
                             variant={matches ? "body1" : "body2"}
                             className={classes.name}
                             style={{
-                                border: highlighted
-                                    ? "2px solid #265802"
-                                    : turn
-                                    ? "2px solid #265802"
-                                    : "none",
+                                border: highlighted || turn ? "2px solid #265802" : "none",
                             }}
                             key={index}
                         >
