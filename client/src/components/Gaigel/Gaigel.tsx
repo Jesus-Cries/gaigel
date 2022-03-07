@@ -419,8 +419,11 @@ const Gaigel: React.FC<Props> = () => {
             setEndInformation(data);
         });
 
-        newSocket.on("setLostAufDissle", (data: string) => {
-            setLostAufDissle(true);
+        newSocket.on("setLostAufDissle", (data: boolean) => {
+            setLostAufDissle(data);
+        });
+
+        newSocket.on("setLosingPlayer", (data: string) => {
             setLosingPlayer(data);
         });
 
@@ -495,7 +498,7 @@ const Gaigel: React.FC<Props> = () => {
 
                     {showEndPopup && (
                         <EndPopup
-                            aufDissle={lostAufDissle}
+                            lostAufDissle={lostAufDissle}
                             endInformation={endInformation}
                             backToLobby={backToLobby}
                             losingPlayer={losingPlayer}

@@ -78,11 +78,16 @@ interface EndPlayerInformation {
 interface Props {
     endInformation: EndPlayerInformation[];
     backToLobby: () => void;
-    aufDissle: boolean;
+    lostAufDissle: boolean;
     losingPlayer?: string;
 }
 
-const EndPopup: React.FC<Props> = ({ endInformation, backToLobby, aufDissle, losingPlayer }) => {
+const EndPopup: React.FC<Props> = ({
+    endInformation,
+    backToLobby,
+    lostAufDissle,
+    losingPlayer,
+}) => {
     const classes = useStyles();
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.up("lg"));
@@ -135,7 +140,7 @@ const EndPopup: React.FC<Props> = ({ endInformation, backToLobby, aufDissle, los
             <Box className={classes.header}>
                 <img src={"/crown.png"} className={classes.logo} alt="" />
                 <Typography align="center" variant={matches ? "h4" : "h5"}>
-                    {aufDissle
+                    {lostAufDissle
                         ? `${losingPlayer} hat auf Dissle verloren!`
                         : `${endInformation[0].username} hat gewonnen!`}
                 </Typography>

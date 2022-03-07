@@ -254,7 +254,8 @@ function endGame(currentGame, winnerIndex) {
             startGame(currentGame);
             io.in(currentGame.lobbycode).emit("setShowEndPopup", false);
             currentGame.waitingForNextRound = false;
-            io.in(currentGame.lobbycode).emit("resetLostAufDissle");
+            io.in(currentGame.lobbycode).emit("setLostAufDissle", false);
+            io.in(currentGame.lobbycode).emit("setLosingPlayer", "");
         }
     }, 25000);
 }
@@ -511,7 +512,10 @@ function endRound(currentGame, winnerIndex) {
     });
 
     if (winningPlayer.vorhand === true && currentGame.opening === "AufDissle") {
-        io.in(currentGame.lobbycode).emit("setLostAufDissle", winningPlayer.username);
+        console.log("It seems like somebody lost auf Dissle");
+        console.log(`Current opening: ${currentGame.opening}`);
+        io.in(currentGame.lobbycode).emit("setLostAufDissle", true);
+        io.in(currentGame.lobbycode).emit("setLosingPlayer", winningPlayer.username);
         let winner = currentGame.players[0];
         currentGame.players.forEach(function (player) {
             if (player.score > winner.score) {
@@ -699,8 +703,6 @@ function processHöherHat(socket, data, player, currentGame) {
         let beginnerPlayer = currentGame.players.find((player) => player.vorhand === true);
         let notBeginnerPlayers = currentGame.players.filter((player) => player.vorhand === false);
         let playerWithHighestPoints = beginnerPlayer;
-
-        console.log(`Length of notBeginnerPlayers: ${notBeginnerPlayers.length}`);
 
         notBeginnerPlayers.forEach((player) => {
             if (
