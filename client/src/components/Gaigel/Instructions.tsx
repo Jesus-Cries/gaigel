@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: "center",
             gap: "10px",
             boxShadow: "5px 5px 15px black",
+            borderRadius: 20,
         },
         headerButton: {
             display: "flex",
@@ -99,7 +100,7 @@ const Instructions: React.FC<Props> = ({ toggleShowInstructions }) => {
                 {
                     title: "Bedienen",
                     content:
-                        "Sobald der Talon leer ist, also keine Karten mehr zum Nachziehen vorhanden sind, besteht Bedienpflicht. Wenn man also eine Karte besitzt, die die gleiche Farbe wie die erste Karte des Stiches hat, so muss diese gelegt werden.",
+                        "Sobald der Talon leer ist, also keine Karten mehr zum Nachziehen vorhanden sind, besteht Bedienpflicht. Wenn man also eine Karte besitzt, die die gleiche Farbe wie die erste Karte des Stiches hat, so muss diese gelegt werden. Der letzte Stich des Spiels ist zehn zusätzliche Punkte wert.",
                 },
             ],
         },

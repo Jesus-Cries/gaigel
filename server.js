@@ -328,7 +328,7 @@ function tryToStartGame(lobbycode) {
 
     if (amountPlayers === 0) return;
     if (amountPlayers !== amountReadyPlayers) return;
-    if (![1, 2, 3, 4, 6].includes(amountPlayers)) {
+    if (![2, 3, 4, 6].includes(amountPlayers)) {
         io.in(lobbycode).emit("setWarningType", { type: "falsePlayercount", detail: "" });
         return;
     }
@@ -555,7 +555,7 @@ function endRound(currentGame, winnerIndex) {
         player.socket.emit("setScore", player.score);
     });
 
-    if (winningPlayer.score >= 21) {
+    if (winningPlayer.score >= 101) {
         endGame(currentGame, winnerIndex);
         return;
     } else if (winningPlayer.cards.length === 0 && currentGame.talon.length === 0) {
@@ -813,7 +813,7 @@ function processMelden(socket, data, player, currentGame) {
             player.score += 20;
         }
 
-        if (player.score >= 21) {
+        if (player.score >= 101) {
             let winnerIndex = currentGame.players.findIndex(
                 (element) => element.socket.id === player.socket.id
             );

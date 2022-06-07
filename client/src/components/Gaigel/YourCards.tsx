@@ -19,6 +19,8 @@ const useStyles = makeStyles((theme: Theme) =>
             fontWeight: "lighter",
         },
         cardContainer: {
+            marginLeft: 40,
+            marginRight: 40,
             padding: 7,
             position: "relative",
             display: "flex",
@@ -122,8 +124,6 @@ const YourCards: React.FC<Props> = ({
             </Typography>
 
             <Box className={classes.cardsButtonContainer}>
-                <HelpButton toggleShowInstructions={toggleShowInstructions} invisible={true} />
-
                 <Box
                     className={
                         ownSocketId === playerWithTurnSocketId && !showEndPopup
@@ -150,7 +150,20 @@ const YourCards: React.FC<Props> = ({
                     })}
                 </Box>
 
-                <HelpButton toggleShowInstructions={toggleShowInstructions} />
+                <Box
+                    style={{
+                        position: "absolute",
+                        right: 15,
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignContent: "center",
+                        alignItems: "center",
+                        zIndex: 500,
+                    }}
+                >
+                    <HelpButton toggleShowInstructions={toggleShowInstructions} />
+                </Box>
             </Box>
         </Box>
     );
