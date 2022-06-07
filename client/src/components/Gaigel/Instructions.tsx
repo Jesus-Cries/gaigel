@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: "center",
             gap: "10px",
             boxShadow: "5px 5px 15px black",
+            borderRadius: 20,
         },
         headerButton: {
             display: "flex",
