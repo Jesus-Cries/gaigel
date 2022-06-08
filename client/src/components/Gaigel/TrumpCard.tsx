@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import { makeStyles, Theme, useTheme, createStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Grid from "@material-ui/core/Grid";
@@ -14,34 +16,40 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: "center",
             gap: "5px",
         },
-        header: {
+        lightFontWeigth: {
             fontWeight: "lighter",
         },
     })
 );
-interface Props {
-    trumpCard: CardProps;
-}
-
 interface CardProps {
     type: string;
     value: string;
 }
 
-const TrumpCard: React.FC<Props> = ({ trumpCard }) => {
+interface Props {
+    trumpCard: CardProps;
+    openingName: string;
+}
+
+const TrumpCard: React.FC<Props> = ({ trumpCard, openingName }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     let emptyChar: string = "⠀";
 
     return (
         <Grid className={classes.root}>
-            <Typography variant={matches ? "h6" : "body1"} className={classes.header}>
+            <Typography variant={matches ? "h6" : "body1"} className={classes.lightFontWeigth}>
                 Trumpf
             </Typography>
             <GaigelCard type={trumpCard.type} value={trumpCard.value} clickable={false} />
-            <Typography variant={matches ? "body1" : "subtitle2"}>{emptyChar}</Typography>
+            <Typography
+                variant={matches ? "body1" : "subtitle2"}
+                className={classes.lightFontWeigth}
+            >
+                {openingName !== "" ? openingName : emptyChar}
+            </Typography>
         </Grid>
     );
 };

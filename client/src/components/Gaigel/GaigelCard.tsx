@@ -5,25 +5,64 @@ import { Paper, Box, Typography, CardActionArea } from "@material-ui/core";
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            width: 40,
-            height: 60,
-            [theme.breakpoints.up("md")]: {
-                width: 50,
-                height: 75,
+            padding: 4,
+            position: "relative",
+            zIndex: 10,
+            width: 44,
+            height: 64,
+            [theme.breakpoints.up("lg")]: {
+                width: 54,
+                height: 79,
             },
-            border: "1px solid #ddd",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            boxShadow: "none",
         },
+        winAnimation: {
+            "&::before": {
+                content: "''",
+                position: "absolute",
+                width: "calc(100% - 15px)",
+                height: "calc(100% - 15px)",
+                background: "radial-gradient(#ffffff,#ff9100)",
+                animation: `$pulsate 1500ms 3`,
+                borderRadius: "4px",
+            },
+            "&::after": {
+                content: "''",
+                position: "absolute",
+                background: "white",
+                inset: "4px",
+                borderRadius: "4px",
+            },
+        },
+        "@keyframes pulsate": {
+            "0%": {
+                width: "calc(100% - 15px)",
+                height: "calc(100% - 15px)",
+                opacity: 2,
+            },
+            "100%": {
+                width: "calc(100% + 4px)",
+                height: "calc(100% + 4px)",
+                opacity: 0,
+            },
+        },
+
         cardActionArea: {
+            zIndex: 20,
             height: "100%",
             width: "100%",
             display: "flex",
+            borderRadius: 4,
+            boxShadow:
+                "0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)",
         },
         card: {
+            zIndex: 20,
             height: "100%",
-            [theme.breakpoints.up("md")]: {
+            [theme.breakpoints.up("lg")]: {
                 height: "95%",
             },
             width: "100%",
@@ -48,16 +87,26 @@ interface Props {
     clickable: boolean;
     playCard?: (type: string, value: string) => void;
     hidden?: boolean;
+    highlighted?: boolean;
+    keepHighlighting?: boolean;
 }
 
 interface Hash {
     [details: string]: string;
 }
 
-const GaigelCard: React.FC<Props> = ({ type, value, clickable, playCard, hidden = false }) => {
+const GaigelCard: React.FC<Props> = ({
+    type,
+    value,
+    clickable,
+    playCard,
+    hidden = false,
+    highlighted = false,
+    keepHighlighting = true,
+}) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     const symbolMap: Hash = {};
     const iconSize = matches ? 13 : 10;
@@ -68,20 +117,24 @@ const GaigelCard: React.FC<Props> = ({ type, value, clickable, playCard, hidden 
 
     return (
         <Paper
-            className={classes.root}
+            className={highlighted ? `${classes.root} ${classes.winAnimation}` : `${classes.root}`}
             onClick={() => {
                 if (clickable && typeof playCard !== "undefined") playCard(type, value);
             }}
         >
             <CardActionArea
                 className={classes.cardActionArea}
-                style={{ pointerEvents: clickable ? "auto" : "none" }}
+                style={{
+                    pointerEvents: clickable ? "auto" : "none",
+                    border:
+                        keepHighlighting && highlighted ? "1px solid #ff9100" : "1px solid #ddd",
+                }}
             >
                 {hidden && value !== "" ? (
                     <img
                         src={"/cardBacksite_noSpaceAround_n1.png"}
-                        width={matches ? "50" : "40"}
-                        height={matches ? "75" : "60"}
+                        width={matches ? "54" : "44"}
+                        height={matches ? "79" : "64"}
                         alt=""
                     />
                 ) : (

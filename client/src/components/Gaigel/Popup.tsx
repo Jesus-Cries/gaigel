@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: "center",
             alignContent: "center",
             alignItems: "center",
-            [theme.breakpoints.up("md")]: {
+            [theme.breakpoints.up("lg")]: {
                 fontSize: "16px",
             },
         },
@@ -27,6 +27,9 @@ interface Props {
 
 const Popup: React.FC<Props> = ({ snackbarType, type, detail, reset }) => {
     const classes = useStyles();
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
+
     let message = "";
 
     switch (type) {
@@ -67,14 +70,8 @@ const Popup: React.FC<Props> = ({ snackbarType, type, detail, reset }) => {
             message = "Diese Lobby hat bereits die maximale Spieleranzahl von 6 Spielern erreicht.";
             break;
         // -------- Infos --------
-        case "somebodyWonTheStich":
-            message = `${detail} hat den Stich gewonnen.`;
-            break;
         case "somebodyWonTheGame":
             message = `${detail} hat das Spiel gewonnen.`;
-            break;
-        case "newCards":
-            message = "Es wurden neue Karten ausgeteilt.";
             break;
         case "playerLeft":
             message = `${detail} hat das Spiel verlassen. Die Lobby wird in 5 Sekunden geschlossen.`;
@@ -86,7 +83,7 @@ const Popup: React.FC<Props> = ({ snackbarType, type, detail, reset }) => {
             message = `${detail} hat gemeldet.`;
             break;
         case "hasToServe":
-            message = `Sie müssen eine Karte in der selben Farbe spielen.`;
+            message = `Sie müssen eine Karte in der gleichen Farbe spielen.`;
             break;
         default:
             break;
@@ -108,7 +105,7 @@ const Popup: React.FC<Props> = ({ snackbarType, type, detail, reset }) => {
                 severity={snackbarType === "warning" ? "warning" : "info"}
                 className={classes.alert}
             >
-                {message}
+                {message} {type}
             </Alert>
         </Snackbar>
     );

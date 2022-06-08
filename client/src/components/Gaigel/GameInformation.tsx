@@ -30,7 +30,7 @@ interface Props {
 const GameInformation: React.FC<Props> = ({ username, lobbycode, score }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     return (
         <Box className={classes.root}>
@@ -38,7 +38,7 @@ const GameInformation: React.FC<Props> = ({ username, lobbycode, score }) => {
                 {username}
             </Typography>
             <Typography variant={matches ? "h5" : "h6"} className={classes.score}>
-                {score}
+                {Math.floor(score)}
             </Typography>
             <Typography
                 variant={matches ? "h6" : "subtitle2"}

@@ -1,7 +1,8 @@
 import { makeStyles, Theme, useTheme, createStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { Box, IconButton, Typography, Card } from "@material-ui/core";
-import { useEffect, useState } from "react";
+import { Box, IconButton, Typography, Card, MobileStepper } from "@material-ui/core";
+import { useState } from "react";
+import CloseIcon from "@material-ui/icons/Close";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
@@ -19,35 +20,48 @@ const useStyles = makeStyles((theme: Theme) =>
             padding: 20,
             display: "flex",
             flexDirection: "column",
+            justifyContent: "center",
+            alignContent: "center",
+            alignItems: "center",
             gap: "15px",
             boxShadow: "5px 5px 15px black",
         },
-        buttons: {
+        headerButton: {
             display: "flex",
             justifyContent: "space-between",
+            alignContent: "center",
             alignItems: "center",
+            gap: "20px",
+        },
+        closeButton: {
+            position: "absolute",
+            top: "0px",
+            right: "0px",
         },
     })
 );
 
-interface Props {}
+interface Props {
+    setClickedOpening: (newValue: boolean) => void;
+}
 
-const OpeningInstructions: React.FC<Props> = () => {
+const OpeningInstructions: React.FC<Props> = ({ setClickedOpening }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     const [currentPage, setCurrentPage] = useState<number>(0);
+
     let instructions: string[] = [
         "Bei dieser Eröffnungsmöglichkeit wird ein Ass verdeckt durch die Vorhand gespielt. Alle anderen Spieler spielen nun auch verdeckt jeweils eine Karte. Der Stich gehört dem Spieler, der das gleiche Ass wie die Vorhand gespielt hat. Ist dies nicht der Fall, gehört der Stich der Vorhand.",
         "In dieser Eröffnungsmöglichkeit wird das Ass von der Vorhand offen ausgespielt. Die anderen Spieler können nun eine beliebige Karte offen abwerfen. Der Stich geht dann an den Spielbeginner.",
         "Bei Höher hat wird eine Karte verdeckt ausgespielt, welche weder ein Ass, noch ein Trumpf ist. Auch die anderen Spieler spielen jeweils eine verdeckte Karte aus. Der Stich geht an den Spieler, welcher eine Karte mit der gleichen Farbe, aber mit höherem Wert gelegt hat. Wird keine Karte der gleichen Farbe mit höherem Wert gelegt, so geht der Stich an die Vorhand.",
         "Eine weitere Eröffnungsmöglichkeit ist Dissle. Sagt die Vorhand zu Beginn des Spiels, dass auf Dissle gespielt wird, so gewinnt die Vorhand das Spiel, falls sie im Verlauf des Spiels fünf Siebener gleichzeitig besitzt. Die Gegner können bereits vorher das reguläre Spielende erreichen. Die Vorhand hat das Spiel verloren, wenn sie einen Stich gewinnt.",
     ];
-    let instructionTitles: string[] = ["Andere Alte hat", "Ge-Elfen", "Höher hat", "Auf Dissle"];
+    let instructionTitles: string[] = ["Andere Alte", "Ge-Elfen", "Höher hat", "Auf Dissle"];
 
     const pageDown = () => {
-        let newPage = currentPage - 1 < 0 ? 0 : currentPage - 1;
+        let newPage = currentPage - 1 < 0 ? 3 : currentPage - 1;
         setCurrentPage(newPage);
     };
 
@@ -58,7 +72,7 @@ const OpeningInstructions: React.FC<Props> = () => {
 
     return (
         <Card className={classes.root}>
-            <Box className={classes.buttons}>
+            <Box className={classes.headerButton}>
                 <IconButton onClick={pageDown}>
                     <ArrowBackIosIcon />
                 </IconButton>
@@ -68,11 +82,30 @@ const OpeningInstructions: React.FC<Props> = () => {
                 <IconButton onClick={pageUp}>
                     <ArrowForwardIosIcon />
                 </IconButton>
+
+                <IconButton
+                    className={classes.closeButton}
+                    onClick={() => {
+                        setClickedOpening(false);
+                    }}
+                >
+                    <CloseIcon fontSize={matches ? "large" : "medium"} />
+                </IconButton>
             </Box>
 
             <Typography variant={matches ? "body1" : "caption"}>
                 {instructions[currentPage]}
             </Typography>
+
+            <MobileStepper
+                style={{ backgroundColor: "white" }}
+                position="static"
+                variant="dots"
+                steps={4}
+                activeStep={currentPage}
+                backButton={<></>}
+                nextButton={<></>}
+            ></MobileStepper>
         </Card>
     );
 };

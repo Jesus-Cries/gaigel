@@ -10,7 +10,7 @@ import Talon from "./Talon";
 import TrumpCard from "./TrumpCard";
 import PlayedCards from "./PlayedCards";
 import YourCards from "./YourCards";
-import { Box, Button, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import Opening from "./Opening";
 import LobbyPage from "./LobbyPage";
 import PlayerList from "./PlayerList";
@@ -20,11 +20,13 @@ import EndPopup from "./EndPopup";
 import Header from "./Header";
 import Actions from "./Actions";
 import OpeningInstructions from "./OpeningInstructions";
+import Instructions from "./Instructions";
 
 // MARK: Styles
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
+            position: "relative",
             height: "100vh",
             padding: 10,
             paddingLeft: 20,
@@ -46,6 +48,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
     })
 );
+
 interface Props {}
 
 interface CardProps {
@@ -84,7 +87,7 @@ const Gaigel: React.FC<Props> = () => {
     // MARK: States
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     // Boolean for deciding on whether to show the landing page or the lobby
     const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -92,7 +95,10 @@ const Gaigel: React.FC<Props> = () => {
     // Boolean for deciding on whether to show the lobby page or the game
     const [gameStarted, setGameStarted] = useState<boolean>(false);
 
+    const [showInstructions, setShowInstructions] = useState<boolean>(false);
+
     const [ownUsername, setOwnUsername] = useState<string>("");
+    const [ownSocketId, setOwnSocketId] = useState<string>("");
 
     const [score, setScore] = useState<number>(0);
 
@@ -109,12 +115,16 @@ const Gaigel: React.FC<Props> = () => {
         socketId: "",
     });
 
+    // Toggle for showing opinion options
     const [opening, setOpening] = useState<boolean>(false);
 
+    // Saves the code for the chosen opening (e.g. "HöherHat", "AufDissle")
+    // Is cleared after the first Stich
     const [currentOpening, setCurrentOpening] = useState<string>("");
 
-    // Latest response from server (For debugging purposes)
-    const [response, setResponse] = useState("");
+    // Saves the real name of the chosen opening (e.g. "Höher hat", "Auf Dissle")
+    // Is cleared after a game has been won
+    const [openingName, setOpeningName] = useState<string>("");
 
     const [socket, setSocket] = useState(null);
 
@@ -131,6 +141,15 @@ const Gaigel: React.FC<Props> = () => {
     const [endInformation, setEndInformation] = useState<EndPlayerInformation[]>([
         { username: "", score: 0, wins: 0 },
     ]);
+
+    // Determines which card should be highlighted
+    // If no card should be highlighted set the value to -1
+    const [highlightedCardIndex, setHighlightedCardIndex] = useState<number>(-1);
+
+    const [highlightedPlayer, setHighlightedPlayer] = useState<PlayerProps>({
+        username: "",
+        socketId: "",
+    });
 
     // The cards that can still be drawn from the talon
     const [talonCards, setTalonCards] = useState<CardProps[]>(
@@ -156,6 +175,17 @@ const Gaigel: React.FC<Props> = () => {
     const [lostAufDissle, setLostAufDissle] = useState<boolean>(false);
 
     const [losingPlayer, setLosingPlayer] = useState<string>("");
+
+    const [canPlayAndereAlte, setCanPlayAndereAlte] = useState<boolean>(true);
+    const [canPlayGeElfen, setCanPlayGeElfen] = useState<boolean>(true);
+    const [canPlayHöherHat, setCanPlayHöherHat] = useState<boolean>(true);
+
+    const [newCard, setNewcard] = useState<CardProps>({ type: "", value: "" });
+
+    const toggleShowInstructions = () => {
+        let newValue: boolean = !showInstructions;
+        setShowInstructions(newValue);
+    };
 
     const onClickOpening = () => {
         setClickedOpening(!clickedOpening);
@@ -280,14 +310,36 @@ const Gaigel: React.FC<Props> = () => {
         setSocket(socket);
     }, []);
 
+    useEffect(() => {
+        if (!Opening) return;
+
+        let playerHasAce: boolean = yourCards.filter((card) => card.value === "A").length > 0;
+
+        setCanPlayAndereAlte(playerHasAce);
+        setCanPlayGeElfen(playerHasAce);
+
+        let hasNonTrumpNonAceCard =
+            yourCards.filter((card) => trumpCard.type !== card.type && card.value !== "A").length >
+            0;
+
+        setCanPlayHöherHat(hasNonTrumpNonAceCard);
+    }, [yourCards]);
+
     // @ts-ignore
     useEffect(() => {
-        const newSocket = socketIOClient("http://127.0.0.1:5000");
+        let domain = "https://gaigel-web.herokuapp.com/";
+        if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+            domain = "http://127.0.0.1:5000";
+        }
+
+        const newSocket = socketIOClient(domain);
+
         // @ts-ignore
         setSocket(newSocket);
 
         newSocket.on("onConnect", (data: string) => {
-            setResponse(data);
+            setOwnSocketId(data);
+            console.log("Here");
         });
 
         newSocket.on("setLoggedIn", (data: boolean) => {
@@ -347,6 +399,10 @@ const Gaigel: React.FC<Props> = () => {
             setCurrentOpening(data);
         });
 
+        newSocket.on("setOpeningName", (data: string) => {
+            setOpeningName(data);
+        });
+
         newSocket.on("canCall", (data: boolean) => {
             setCanCall(data);
         });
@@ -368,6 +424,18 @@ const Gaigel: React.FC<Props> = () => {
             setLosingPlayer(data);
         });
 
+        newSocket.on("setHighlightedCardIndex", (data: number) => {
+            setHighlightedCardIndex(data);
+        });
+
+        newSocket.on("setHighlightedPlayer", (data: PlayerProps) => {
+            setHighlightedPlayer(data);
+        });
+
+        newSocket.on("newCard", (data: CardProps) => {
+            setNewcard(data);
+        });
+
         return () => newSocket.close();
     }, [setSocket]);
 
@@ -376,13 +444,14 @@ const Gaigel: React.FC<Props> = () => {
     return (
         <Box
             className={classes.root}
-            style={{
-                backgroundColor: loggedIn && gameStarted ? "#ffffff" : "none",
-                boxShadow: !loggedIn || !gameStarted ? "none" : "5px 5px 15px black",
-            }}
+            style={
+                loggedIn && gameStarted
+                    ? { backgroundColor: "#fff", boxShadow: "5px 5px 15px black" }
+                    : {}
+            }
         >
             {!loggedIn ? (
-                <LandingPage login={login} />
+                <LandingPage login={login} toggleShowInstructions={toggleShowInstructions} />
             ) : !gameStarted ? (
                 <LobbyPage
                     backToLogin={backToLogin}
@@ -390,6 +459,7 @@ const Gaigel: React.FC<Props> = () => {
                     playerInformation={lobbyInformation.playerInformation}
                     amountReadyPlayers={lobbyInformation.amountReadyPlayers}
                     getReady={getReady}
+                    toggleShowInstructions={toggleShowInstructions}
                 />
             ) : (
                 <>
@@ -399,22 +469,29 @@ const Gaigel: React.FC<Props> = () => {
                         lobbycode={lobbyInformation.lobbycode}
                         score={score}
                     />
-                    <PlayerList order={order} playerWithTurn={playerWithTurn} />
+                    <PlayerList
+                        order={order}
+                        playerWithTurn={playerWithTurn}
+                        highlightedPlayer={highlightedPlayer}
+                    />
                     <hr style={{ width: "100%" }} />
                     <Box className={classes.talonAndTrump}>
                         <Talon cardsLeft={talonCards.length} drawCard={drawCard} />
-                        <TrumpCard trumpCard={trumpCard} />
+                        <TrumpCard trumpCard={trumpCard} openingName={openingName} />
                     </Box>
 
                     <PlayedCards
                         playedCards={playedCards}
                         playerCount={lobbyInformation.playerInformation.length}
                         opening={currentOpening}
+                        highlightedCardIndex={highlightedCardIndex}
                     />
 
                     <hr style={{ width: "100%" }} />
 
-                    {clickedOpening && <OpeningInstructions />}
+                    {clickedOpening && (
+                        <OpeningInstructions setClickedOpening={setClickedOpening} />
+                    )}
 
                     {showEndPopup && (
                         <EndPopup
@@ -442,11 +519,21 @@ const Gaigel: React.FC<Props> = () => {
                             HöherHat={HöherHat}
                             AufDissle={AufDissle}
                             handleClick={onClickOpening}
+                            canPlayHöherHat={canPlayHöherHat}
+                            canPlayGeElfen={canPlayGeElfen}
+                            canPlayAndereAlte={canPlayAndereAlte}
                             hover={clickedOpening}
                         />
                     )}
 
-                    <YourCards userCards={yourCards} playCard={playCard} />
+                    <YourCards
+                        userCards={yourCards}
+                        playCard={playCard}
+                        ownSocketId={ownSocketId}
+                        playerWithTurnSocketId={playerWithTurn.socketId}
+                        toggleShowInstructions={toggleShowInstructions}
+                        newCard={newCard}
+                    />
                 </>
             )}
             <Popup
@@ -461,6 +548,7 @@ const Gaigel: React.FC<Props> = () => {
                 detail={warningType.detail}
                 reset={resetWarning}
             />
+            {showInstructions && <Instructions toggleShowInstructions={toggleShowInstructions} />}
         </Box>
     );
 };

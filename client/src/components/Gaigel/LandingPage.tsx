@@ -5,6 +5,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Button, TextField, Box, Typography } from "@material-ui/core";
 
 import Header from "./Header";
+import HelpButton from "./HelpButton";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -12,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
             [theme.breakpoints.down("sm")]: {
                 maxWidth: "420px",
             },
-            [theme.breakpoints.up("md")]: {
+            [theme.breakpoints.up("lg")]: {
                 maxWidth: "800px",
             },
             padding: 20,
@@ -31,17 +32,26 @@ const useStyles = makeStyles((theme: Theme) =>
             backgroundColor: "#ffffff",
             borderRadius: 4,
         },
+        controllContainer: {
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+            alignContent: "center",
+            alignItems: "center",
+            gap: "0px",
+        },
     })
 );
 
 interface Props {
     login: (username: string, lobbycode: string) => void;
+    toggleShowInstructions: () => void;
 }
 
-const LandingPage: React.FC<Props> = ({ login }) => {
+const LandingPage: React.FC<Props> = ({ login, toggleShowInstructions }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
     const [username, setUsername] = useState<string>("");
     const [lobbycode, setLobbycode] = useState<string>("");
@@ -104,9 +114,18 @@ const LandingPage: React.FC<Props> = ({ login }) => {
                 erstellt."
             />
 
-            <Button variant="contained" onClick={handleLogin} style={{ width: "100%" }}>
-                Beitreten
-            </Button>
+            <Box className={classes.controllContainer}>
+                <Button
+                    disabled={username === "" || lobbycode === "" ? true : false}
+                    variant="contained"
+                    size={matches ? "large" : "medium"}
+                    onClick={handleLogin}
+                    style={{ width: "80%" }}
+                >
+                    Beitreten
+                </Button>
+                <HelpButton toggleShowInstructions={toggleShowInstructions} />
+            </Box>
         </Box>
     );
 };
