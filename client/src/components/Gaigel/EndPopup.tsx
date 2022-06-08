@@ -138,7 +138,7 @@ const EndPopup: React.FC<Props> = ({
     return (
         <Card className={classes.root}>
             <Box className={classes.header}>
-                <img src={"/crown.png"} className={classes.logo} alt="" />
+                <img src={"/crown.png"} className={classes.logo} />
                 <Typography align="center" variant={matches ? "h4" : "h5"}>
                     {lostAufDissle
                         ? `${losingPlayer} hat auf Dissle verloren!`
